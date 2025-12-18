@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()  # must be before reading any config
 from flask import Flask,session
 from flask_wtf.csrf import CSRFProtect
 from flask_migrate import Migrate
