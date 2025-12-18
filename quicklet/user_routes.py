@@ -43,7 +43,7 @@ def login_required(f):
 
 @app.get('/')
 def home_page():
-
+    pagetitle = 'Home Page'
     user = None
     agent = None
     categories = Category.query.order_by(Category.category_name).all()
@@ -61,7 +61,7 @@ def home_page():
         agent = Agent.query.get(session["agentonline"])
 
 
-    return render_template('user/index.html',categories=categories,states=states,apartments=apartments,user=user,agent=agent,contact=contact)   
+    return render_template('user/index.html',categories=categories,states=states,apartments=apartments,user=user,agent=agent,contact=contact,pagetitle=pagetitle)   
 
 
 
