@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickLet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ql.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/all.min.css') }}">
+    <link rel="icon"  type="image/ico" href="pic/quickleticon.ico"> 
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lobster&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pic/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pic/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pic/apple-touch-icon.png') }}">
+
+  
+
+    <style> 
+
+    </style>
+</head>
+<body class="nav-body">
+    <!-- container -->
+ <div class="container-fluid">
+    <!-- header -->
+     <div class="box">
+      <a href="{{url_for('contact')}}"><img src="/static/pic/chat.png" style="width: 45px;" alt="stickypicturechatbox"></a>
+     </div>
+  <div class="row">
+
+    <div class="col-md-12">
+      <nav class="navbar navbar-expand-lg mybg fixed-top">
+          <div class="container-fluid">
+  
+              <a class="navbar-brand qlbrand" href="#">Quick<span class="qlsp">Let</span></a>
+  
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                      data-bs-target="#navbarSupportedContent">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+  
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  
+                  <!-- LEFT -->
+                  <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+  
+                      <li class="nav-item">
+                          <a class="nav-link" href="{{ url_for('home_page') }}">Home</a>
+                      </li>
+  
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                          Apartments
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{{url_for('apartments')}}">Studio</a></li>
+                          <li><a class="dropdown-item" href="{{url_for('apartments')}}">1 Bedroom</a></li>
+                          <li><a class="dropdown-item" href="{{url_for('apartments')}}">2 Bedrooms</a></li>
+                          <li><a class="dropdown-item" href="{{url_for('apartments')}}">3 Bedrooms</a></li>
+                          <li><a class="dropdown-item" href="{{url_for('apartments')}}">4 Bedrooms</a></li>
+                        </ul>
+                      </li>
+  
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                          Cities
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{{url_for('apartments')}}">Lagos</a></li>
+                          <li><a class="dropdown-item" href="{{url_for('apartments')}}">Abuja</a></li>
+                          <li><a class="dropdown-item" href="{{url_for('apartments')}}">Ibadan Coming Soon</a></li>
+                        </ul>
+                      </li>
+  
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('agent_login')}}">List Property</a>
+                      </li>
+  
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('about_us')}}">About Us</a>
+                      </li>
+  
+                      <li class="nav-item">
+                        <a href="{{url_for('contact')}}" class="nav-link">Contact Us</a>
+                      </li>
+  
+                  </ul>
+  
+                  <!-- RIGHT (LOGIN / REGISTER / HELLO USER) -->
+                  {% if not user and not agent %}
+                  
+                      <!-- REGISTER -->
+                      <li class="nav-item dropdown btn btn-warning mx-1">
+                          <a class="nav-link dropdown-toggle btn btn-warning" href="#" 
+                             data-bs-toggle="dropdown">Register</a>
+                          <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{url_for('user_register')}}">User</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{url_for('agent_register')}}">Agent</a></li>
+                          </ul>
+                      </li>
+  
+                      <!-- LOGIN -->
+                      <li class="nav-item dropdown btn btn-warning mx-2">
+                          <a class="nav-link dropdown-toggle btn btn-warning" href="#" 
+                             data-bs-toggle="dropdown">Login</a>
+                          <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{url_for('user_login')}}">User</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{url_for('agent_login')}}">Agent</a></li>
+                          </ul>
+                      </li>
+  
+                  {% elif user %}
+                      <!-- USER LOGGED IN -->
+                  <a href="{{url_for('user_dashboard')}}" class="btn btn-warning mx-2 text-dark"> Hi, {{ user.user_fname|capitalize }}</a>
+
+                      <!-- <span class="nav-link text-light fw-bold me-3">
+                          Hello, {{ user.user_fname }}
+                      </span> -->
+                      <a href="{{ url_for('user_logout') }}" 
+                         class="btn btn-danger"><i class="fas fa-power-off"></i> Logout</a>
+  
+                  {% elif agent %}
+                      <!-- AGENT LOGGED IN -->
+                  <a href="{{url_for('agent_dashboard')}}" class="btn btn-warning mx-2 text-dark">  Hi, {{ agent.agent_fname|capitalize }}</a>
+
+                      <!-- <span class="nav-link text-light fw-bold me-3">
+                          Hello, {{ agent.agent_fname }}
+                      </span> -->
+                      <a href="{{ url_for('agent_logout') }}" 
+                         class="btn btn-danger"><i class="fas fa-power-off"></i> Logout</a>
+                  {% endif %}
+  
+              </div>
+          </div>
+      </nav>
+  </div>
+  
+
+
+
+
+
+  </div>  

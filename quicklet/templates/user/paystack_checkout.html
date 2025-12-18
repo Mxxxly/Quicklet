@@ -1,0 +1,43 @@
+{% include 'user/nav.html' %}
+
+<div class="container my-5 d-flex justify-content-center">
+    <div class="card p-4 shadow-lg" style="max-width: 600px; width: 100%; border-radius: 15px;">
+        <h3 class="mb-4">Complete Payment</h3>
+
+        <p>Amount: ₦{{ payment.pay_amt }}</p>
+        <p>Reference: {{ payment.pay_ref }}</p>
+
+        <button id="paystack-btn" class="btn btn-success w-100">Pay Now</button>
+    </div>
+</div>
+
+<!-- jQuery (if not already included in your layout) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<script>
+$(document).ready(function(){
+    $('#paystack-btn').on('click', function(e){
+        e.preventDefault();
+
+        var handler = PaystackPop.setup({
+            key: "{{ PAYSTACK_PUBLIC_KEY }}",  // your Paystack public key
+            email: "{{ user.user_email }}",
+            amount: {{ (payment.pay_amt * 100)|int }}, // amount in kobo
+            currency: "NGN",
+            ref: "{{ payment.pay_ref }}",
+            callback: function(response){
+                // Payment succeeded, redirect to callback route
+                window.location.href = "{{ url_for('paystack_callback', ref=payment.pay_ref) }}";
+            },
+            onClose: function(){
+                alert('Payment was cancelled.');
+            }
+        });
+
+        handler.openIframe();
+    });
+});
+</script>
+
+{% include 'user/nav.html' %}

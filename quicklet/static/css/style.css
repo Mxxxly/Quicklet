@@ -1,0 +1,114 @@
+:root{
+    --main-color:orange;
+    --no-border:0px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Hero Section */
+.hero-section {
+    background-color: #f8f9fa;
+}
+
+/* Why Us Section */
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Product Cards */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* How to Order */
+.step-number {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Products Hero */
+.products-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/soupy_hero.png');
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0;
+}
+
+/* Footer */
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.social-icons a:hover {
+    background-color: var(--bs-success);
+    text-decoration: none;
+}
+
+
+@media (max-width: 768px) {
+    .hero-section .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .products-hero .input-group {
+        width: 100% !important;
+    }
+}
+
+.bg-success{
+    background-color:var(--main-color) !important;
+}
+.btn-success{
+    background-color:var(--main-color)!important;
+}
+.text-success{
+    color:var(--main-color) !important;
+}
+
+.stat-card {
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+}
+.stat-card:hover {
+      transform: translateY(-5px);
+}
+.stat-icon {
+      font-size: 2rem;
+      color: var(--main-color);
+}
+
+.profile-pic {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      clip-path: circle(50% at 50% 50%);
+    }

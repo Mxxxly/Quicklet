@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickLet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ql.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pic/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pic/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pic/apple-touch-icon.png') }}">
+    
+
+
+    <link rel="stylesheet" type="text/css" href="static/fontawesome/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lobster&display=swap" rel="stylesheet">
+
+
+</head>
+<body class="body-agent-dashboard-page">
+    <!-- container -->
+ <div class="container-fluid">
+    <!-- header -->
+  <div class="row">
+    
+    <div class="col-md-12">
+        <nav class="navbar navbar-expand-lg mybg fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand qlbrand " href="{{url_for('home_page')}}">Quick<span class="qlsp">Let</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+        <a href="{{url_for('home_page')}}" class="btn btn-warning mx-1">Home</a>
+
+        </li>
+        <li class="nav-item">
+          <a href="{{url_for('contact')}}" class="btn btn-warning mx-2" >Contact Us </a>
+        </li>
+        
+      </ul>
+      
+        
+
+        <a href="{{url_for('agent_logout')}}" class="btn text-danger btn-outline-danger" ><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+    
+    </div>
+  </div>
+</nav>
+    </div>
+  </div>  
+
+
+<div class="row p-4">
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show text-center">
+          {{ msg }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+<div class="col-md-3 shadow-sm border-1 dashnav p-3 " >
+    <ul>
+      <a href="{{ url_for('agent_dashboard') }}" class="dasha">
+        <li><i class="fas fa-tachometer-alt me-2"></i> Agent Dashboard</li>
+    </a>
+    <hr>
+    
+    <a href="{{ url_for('add_apt') }}" class="dasha">
+        <li><i class="fas fa-plus-circle me-2"></i> Add New Apartment</li>
+    </a>
+    <hr>
+    
+    <a href="{{ url_for('my_listing_page') }}" class="dasha">
+        <li><i class="fas fa-building me-2"></i> My Apartments</li>
+    </a>
+    <hr>
+    
+    <a href="{{ url_for('agent_earnings') }}" class="dasha">
+        <li><i class="fas fa-wallet me-2"></i> My Earnings</li>
+    </a>
+    <hr>
+    
+    <a href="{{ url_for('my_bookings') }}" class="dasha">
+        <li><i class="fas fa-calendar-check me-2"></i> My Bookings</li>
+    </a>
+    <hr>
+    
+    
+    
+    <a href="{{ url_for('agent_edit_profile') }}" class="dasha">
+        <li><i class="fas fa-user-edit me-2"></i> Edit Profile</li>
+    </a>
+    <hr>
+    
+    <a href="{{ url_for('agent_logout') }}" class="dasha">
+        <li><i class="fas fa-sign-out-alt me-2"></i> Logout</li>
+    </a>
+    
+    </ul>
+</div>
+
+<div class="col-md-9 shadow-sm border-1 dashnav p-3">
+    {%block dashtitle%}  <h3 class="p-3">Agent Dashboard</h3> {%endblock%}
+    {%block dashcontent%}
+    <div class="dashwelcome">
+        <div>
+          {%if adeets.agent_avatar %}
+          <img src="/static/uploads/{{adeets.agent_avatar}}" alt="dp" class="profile-pic" >
+          {%else%}
+          <img src="/static/pic/default.jpg" alt="dp" class="profile-pic" >
+          {%endif%}
+            <div class="greeting">Welcome back, Agent {{a.agent_fname|capitalize}}</div>
+            <div class="small">Manage your listings, track bookings, and help guests find their ideal stay.</div>
+        </div>
+        <div class="d-flex gap-2 align-items-center">
+            <a class="btn btn-outline-primary" href="{{url_for('agent_edit_profile')}}">Edit Profile</a>
+            <a class="btn btn-outline-primary" href="{{url_for('my_bookings')}}">View bookings</a>
+            <a class="btn btn-purple" href="{{url_for('apartments')}}">Search apartments</a>
+
+        </div>
+    </div>
+    <!-- stats -->
+    <div class="stats mt-3">
+        <div class="stat-card card">
+          <div class="stat-title">Upcoming stay</div>
+          <div class="stat-value">No booking yet</div>
+          <div class="small">None Yet</div>
+        </div>
+        <div class="stat-card card">
+          <div class="stat-title">Pending payments</div>
+          <div class="stat-value">₦0</div>
+          <div class="small">No pending invoices</div>
+        </div>
+        <div class="stat-card card">
+          <div class="stat-title">Messages</div>
+          <div class="stat-value">0</div>
+          <div class="small">Unread messages</div>
+        </div>
+        <div class="stat-card card">
+          <div class="stat-title">Favorites</div>
+          <div class="stat-value">0</div>
+          <div class="small">Saved apartments</div>
+        </div>
+      </div>
+
+      <!-- saved jobs  -->
+
+      
+
+      <!-- content -->
+
+      
+      <div class="card p-4 mt-5">
+        <h5 class="mb-3"><i class="fas fa-list mx-2"></i>{%block title%}My Apartments{%endblock title%}</h5>
+        {%block content%}
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+              <tr>
+                  <th>Title</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                  <th>Bookings</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% if my_apartments %}
+                  {% for apt in my_apartments %}
+                      <tr>
+                          <!-- Title -->
+                          <td>{{ apt.apartment_title }}</td>
+      
+                          <!-- Location -->
+                          <td>{{ apt.apartment_address }}</td>
+      
+                          <!-- Status -->
+                          <td>
+                              {% if apt.apartment_status == 'active' %}
+                                  <span class="badge bg-success">Active</span>
+                              {% else %}
+                                  <span class="badge bg-secondary">Draft</span>
+                              {% endif %}
+                          </td>
+      
+                          <!-- Bookings -->
+                          <td>{{ apt.bookings_count or 0 }}</td>
+      
+                          <!-- Actions -->
+                          <td class="d-flex gap-1">
+                              <a href="{{ url_for('edit_apartment', apartment_id=apt.apartment_id) }}" 
+                                 class="btn btn-sm btn-outline-primary">
+                                  <i style="font-size: 18px;" class="fas fa-edit"></i> Edit
+                              </a>
+                              <form action="{{ url_for('delete_apartment', apartment_id=apt.apartment_id) }}" method="POST" style="display:inline;">
+  
+                                  <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this property?');">
+                                      <i style="font-size: 18px;" class="fas fa-trash"></i> Remove
+                                  </button>
+                              </form>
+                          </td>
+                      </tr>
+                  {% endfor %}
+              {% else %}
+                  <tr>
+                      <td colspan="5" class="text-center text-muted">You have not added any properties yet.</td>
+                  </tr>
+              {% endif %}
+          </tbody>
+      </table>
+        {%endblock content%}
+      </div>
+  
+
+      
+    {%endblock dashcontent%}
+
+    </div>
+
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <script src="{{ url_for('static', filename='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="/static/js/jquery.min.js"></script>
+  {%block script %}
+  
+  {%endblock script%}
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickLet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ql.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pic/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pic/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pic/apple-touch-icon.png') }}">
+
+
+
+    <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lobster&display=swap" rel="stylesheet">
+
+
+    <style> 
+      
+    </style>
+</head>
+<body class="listing-page-body">
+    <!-- container -->
+ <div class="container-fluid">
+    <!-- header -->
+  <div class="row">
+    
+    <div class="col-md-12">
+        <nav class="navbar navbar-expand-lg mybg fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand qlbrand " href="#">Quick<span class="qlsp">Let</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a href="{{url_for('contact')}}" class="nav-link " >Contact Us </a>
+        </li>
+      </ul>
+      
+        
+        <a href="{{url_for('user_dashboard')}}" class="btn btn-outline-success mx-2">Dashboard</a>
+        <form action="/logoutsp/" method="post">
+          <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+          <a href="{{url_for('user_logout')}}" class="btn text-danger btn-outline-danger"><i class="fas fa-power-off"></i> Log out</a>
+        </form>
+    
+    </div>
+  </div>
+</nav>
+    </div>
+  </div>  
+<!-- header -->
+<div class="row">
+    <div class="col-md-12 text-center p-4">
+      <h1>Welcome Back, {{u.user_fname}}</h1> {#{{session.get('useronline')}}#}
+      <p>Manage your properties, bookings, and earnings in one place.</p>
+    </div>
+   
+</div>
+      <!-- subjects -->
+    <div class="row justify-content-between">
+      <div class="col-md-3">
+        <div class="card text-center p-4">
+          <i class="fa-solid fa-building"></i>
+          <h5 class="mt-2">My Properties </h5>
+          <p class="text-muted">View and manage all your listed apartments.</p>
+          <a href="{{url_for('add_apt')}}"  class="btn btn-sm btn-add">Manage</a>
+          <!-- <a href="#" class="btn btn-sm btn-add">Manage</a> -->
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center p-4">
+          <i class="fa-solid fa-plus-circle"></i>
+          <h5 class="mt-2">Add New</h5>
+          <p class="text-muted">List a new property and attract renters.<p>
+          <a href="{{url_for('add_apt')}}"  class="btn btn-sm btn-add">Add Property</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center p-4">
+          <i class="fa-solid fa-check"></i>
+          <h5 class="mt-2">Bookings</h5>
+          <p class="text-muted">See who has booked your apartments.<p>
+          <a href="#"  class="btn btn-sm btn-add">View Bookings</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center p-4">
+          <i class="fa-solid fa-wallet"></i>
+          <h5 class="mt-2">Earnings</h5>
+          <p class="text-muted">Check your total earnings and payouts.<p>
+          <a href="#"  class="btn btn-sm btn-add">View Earnings</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- properties Table  -->
+
+    <div class="card p-4 mt-5">
+      <h5 class="mb-3"><i class="fas fa-list"></i>{%block title%}My Properties{%endblock title%}</h5>
+      {%block content%}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Bookings</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2-Bedroom in Lekki</td>
+            <td>Lagos</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td>4</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary">Edit</button>
+              <button class="btn btn-sm btn-outline-danger">Remove</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Studio in Wuse</td>
+            <td>Abuja</td>
+            <td><span class="badge bg-warning">Pending</span></td>
+            <td>2</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary">Edit</button>
+              <button class="btn btn-sm btn-outline-danger">Remove</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {%endblock content%}
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+<script src="{{ url_for('static', filename='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+
+</body>
+</html>

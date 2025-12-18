@@ -1,0 +1,252 @@
+{% extends "user/agentdashboard_page.html" %}
+
+{% block dashtitle %}
+<h3 class="mb-3">Add New Apartment</h3>
+{% endblock dashtitle %}
+
+{% block dashcontent %}
+<h6>Fill the form below to create a new apartment listing. Required fields are marked.</h6>
+
+<form id="addListingForm" method="post" action="{{ url_for('add_apt') }}" enctype="multipart/form-data">
+  {{ add.csrf_token }}
+
+  <div class="row g-4">
+
+    <!-- LEFT COLUMN -->
+    <div class="col-lg-7">
+
+      <!-- Category -->
+      <div class="mb-3">
+        <label for="category">Apartment Category</label>
+        <select name="category_id" class="form-control" required>
+          <option value="">Select Category</option>
+          {% for c in categories %}
+            <option value="{{ c.category_id }}">{{ c.category_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Title -->
+      <div class="mb-3">
+        {{ add.title.label(class="form-label") }} <span class="required">*</span>
+        {{ add.title(class_='form-control', placeholder="Eg. Spacious 2-bedroom apartment") }}
+        {% for error in add.title.errors %}
+          <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Price + Currency -->
+      <div class="mb-3 row">
+        <div class="col-md-6">
+          {{ add.price.label(class="form-label") }} <span class="required">*</span>
+          <div class="input-group">
+            <span class="input-group-text">₦</span>
+            {{ add.price(class="form-control", placeholder="e.g. 12000") }}
+          </div>
+          {% for error in add.price.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <!-- Fixed currency field -->
+        <div class="col-md-6">
+          <label class="form-label">Currency</label>
+          <select name="currency" class="form-select" readonly>
+            <option value="NGN" selected>NGN (₦)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- City / Area -->
+      <div class="mb-3 row">
+        
+        <div class="col-md-6">
+          {{ add.area.label(class="form-label") }}
+          {{ add.area(class="form-control", placeholder="Eg. Lekki Phase 1") }}
+        </div>
+        <div class="col-md-6">
+          {{ add.city.label(class="form-label") }} <span class="required">*</span>
+          {{ add.city(class="form-control", placeholder="Lagos") }}
+          {% for error in add.city.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- State / LGA -->
+      <div class="mb-3 row">
+        <div class="col-md-6">
+          <label for="state">State</label>
+          <select name="state" id="state" class="form-select" required>
+            <option value="">Select State</option>
+            {% for s in states %}
+              <option value="{{ s.state_id }}">{{ s.state_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label for="lga">LGA</label>
+          <select name="lga" id="lga" class="form-select" required>
+            <option value="">Select LGA</option>
+          </select>
+        </div>
+      </div>
+
+  
+
+      <!-- Full Description -->
+      <div class="mb-3">
+        {{ add.description.label(class="form-label") }}  <span class="required">*</span>
+        {{ add.description(class="form-control", rows="5", placeholder="Describe the apartment, amenities, nearby transport, rules, etc.") }}
+        {% for error in add.description.errors %}
+        <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Min Nights / Max Guests -->
+      <div class="mb-3 row">
+        <div class="col-md-6">
+          {{ add.min_nights.label(class="form-label") }}
+          {{ add.min_nights(class="form-control", placeholder="1") }}
+        </div>
+        <div class="col-md-6">
+          {{ add.max_guests.label(class="form-label") }}
+          {{ add.max_guests(class="form-control", placeholder="4") }}
+        </div>
+      </div>
+
+    </div> <!-- END LEFT -->
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-lg-5">
+
+      <!-- Single Photo Upload -->
+      <div class="mb-3">
+        {{ add.photos.label(class="form-label") }} <span class="required">*</span>
+        {{ add.photos(class="form-control", multiple=True) }} {#added multiple=True back#}
+
+        <!-- {{ add.photos(class="form-control") }}  Removed multiple=True -->
+        {% for error in add.photos.errors %}
+          <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+        <!-- <div class="form-text">Upload a single JPG or PNG image.</div> -->
+        <div class="form-text">Upload at least 3 images (JPG or PNG).</div>
+
+        <div id="previewContainer" class="mt-2"></div>
+
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="d-grid gap-2 mt-4">
+        <button type="submit" name="action" value="publish" class="btn btn-purple btn-lg">
+          Publish listing
+        </button>
+        <button type="submit" name="action" value="draft" class="btn btn-outline-secondary">
+          Save as draft
+        </button>
+      </div>
+
+    </div> <!-- END RIGHT -->
+
+  </div> <!-- END ROW -->
+
+</form>
+
+{% endblock dashcontent %}
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+  
+      const $photoInput = $("input[name='photos']");
+      const $previewContainer = $("#previewContainer");
+  
+      // Hold all files here
+      let allFiles = [];
+  
+      /* -------------------------
+         IMAGE PREVIEW (MERGES FILES)
+      --------------------------- */
+      $photoInput.on("change", function () {
+          const newFiles = Array.from(this.files); // Files from this selection
+          allFiles = allFiles.concat(newFiles);    // Merge with previous selections
+  
+          // Rebuild DataTransfer for the input
+          const dt = new DataTransfer();
+          allFiles.forEach(file => dt.items.add(file));
+          $photoInput[0].files = dt.files;
+  
+          // Build preview
+          rebuildPreview();
+      });
+  
+      /* -------------------------
+         REMOVE IMAGE
+      --------------------------- */
+      $(document).on("click", ".remove-btn", function () {
+          const index = $(this).parent().data("index");
+  
+          // Remove from allFiles array
+          allFiles.splice(index, 1);
+  
+          // Rebuild DataTransfer
+          const dt = new DataTransfer();
+          allFiles.forEach(file => dt.items.add(file));
+          $photoInput[0].files = dt.files;
+  
+          // Rebuild preview manually
+          rebuildPreview();
+      });
+  
+      /* -------------------------
+         REBUILD PREVIEW FUNCTION
+      --------------------------- */
+      function rebuildPreview() {
+          $previewContainer.html(""); // Clear container
+  
+          allFiles.forEach((file, index) => {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                  const imgBox = `
+                      <div class="img-box" data-index="${index}" 
+                          style="display:inline-block;position:relative;margin:5px;">
+                          <img src="${e.target.result}" 
+                               style="width:120px;height:120px;border-radius:8px;object-fit:cover;">
+                          <button type="button" class="remove-btn btn btn-danger btn-sm"
+                                  style="position:absolute;top:5px;right:5px;">X</button>
+                      </div>`;
+                  $previewContainer.append(imgBox);
+              };
+              reader.readAsDataURL(file);
+          });
+      }
+  
+      /* -------------------------
+         MIN 3 VALIDATION
+      --------------------------- */
+      $("#addListingForm").on("submit", function (e) {
+          if (allFiles.length < 3) {
+              e.preventDefault();
+              alert("Please upload at least 3 pictures.");
+          }
+      });
+  
+      /* -------------------------
+         LOAD LGAS VIA AJAX
+      --------------------------- */
+      $('#state').change(function () {
+          const stateId = $(this).val();
+          $.ajax({
+              url: '/get/lgas/',
+              data: { state_id: stateId },
+              success: function (resp) {
+                  $('#lga').html(resp);
+              }
+          });
+      });
+  
+  });
+  </script>
+  
+{% endblock script %}

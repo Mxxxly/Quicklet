@@ -1,0 +1,50 @@
+{%include "user/userdashnav.html"%}
+
+<main class="container container-main" aria-labelledby="pageTitle">
+  <header class="mb-3">
+    <h1 id="pageTitle" class="page-title">Booking Confirmation</h1>
+    <p class="lead-muted">
+      Thank you for your booking! Your reservation has been successfully confirmed.
+    </p>
+  </header>
+
+  <div class="layout">
+    <!-- ================= LEFT SIDE ================= -->
+    <section>
+      <!-- Booking Details -->
+      <div class="panel mb-3">
+        <h5>Booking Details</h5>
+    
+        <div class="mb-2">
+          <strong>Apartment:</strong> {{ booking.apartment.apartment_title if booking.apartment else "N/A" }}
+        </div>
+        <div class="mb-2">
+          <strong>Check-in:</strong> {{ booking.booking_checkin }}
+        </div>
+        <div class="mb-2">
+          <strong>Check-out:</strong> {{ booking.booking_checkout }}
+        </div>
+        <div class="mb-2">
+          <strong>Guests:</strong> {{ booking.booking_guests }}
+        </div>
+        <div class="mb-2">
+            <strong>Total Price:</strong> ₦{{ "{:,.0f}".format(booking.booking_price) if booking.booking_price else "0" }}
+        </div>
+    </div>
+      <!-- Next Steps -->
+      <div class="panel mb-3" aria-labelledby="nextStepsTitle">
+        <h5 id="nextStepsTitle">Next Steps</h5>
+        <p>
+          You will receive a confirmation email shortly with all the details of your booking. Please keep this email for your records.
+        </p>
+        <p>
+          If you have any questions or need to make changes to your reservation, feel free to contact our support team.
+        </p>
+      </div>
+    </section>
+  </div>
+<div class="mb-3">
+  <a href="{{ url_for('apartment_display', apartment_id=booking.apartment.apartment_id) }}" class="btn btn-purple">
+    View Your Apartment
+  </a>
+</div>

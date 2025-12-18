@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ql.css') }}">
+
+
+    <link rel="stylesheet" type="text/css" href="/fontawesome/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lobster&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pic/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pic/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pic/apple-touch-icon.png') }}">
+
+    <style>
+      
+    </style>
+
+</head>
+<body class="user-register-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-expand-lg mybg fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand qlbrand " href="{{url_for('home_page')}}">Quick<span class="qlsp">Let</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+         <li class="nav-item">
+          <a class="nav-link" href="{{url_for('home_page')}}">Home</a>
+        </li>
+
+        
+         <li class="nav-item">
+          <a class="nav-link" href="#">List Property</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('about_us')}}">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a href="contact.html" class="nav-link " >Contact Us </a>
+        </li>
+      </ul>
+      
+        
+        
+        <a href="{{url_for('user_login')}}" class="btn btn-warning" >Login</a>
+    
+    </div>
+  </div>
+</nav>
+        </div>
+      </div>
+      <div class="row mt-5  mb-5">
+        <div class="col-md-12 mb-5 d-flex justify-content-center align-items-center">
+             <div class="qlcont mt-5 ">
+
+    <!-- form  -->
+     
+   <h2 class="navbar-brand qlbrand " href="#">Quick<span class="qlsp">Let</span></h2>
+    <h3 class="createacctxt mt-2">Create an Account</h3>
+    <form action="" method="post">
+        <!-- fn -->
+
+        <div class="mb-3">
+          {{regform.csrf_token}}
+
+
+          {{regform.firstname.label(class_='form-label')}}
+          {{regform.firstname(class_='form-control')}}
+          {% for error in regform.firstname.errors %}
+          <span class="text-danger">{{error}}</span>
+          {%endfor%}
+
+
+        </div>
+        <!-- ln -->
+        <div class="mb-3">
+
+          {{regform.lastname.label(class_='form-label')}}
+          {{regform.lastname(class_='form-control')}}
+          <span id="feedback"></span>
+          {% for error in regform.lastname.errors %}
+          <span class="text-danger">{{error}}</span>
+          {%endfor%}
+
+
+        </div>
+
+        <!-- email  -->
+         <div class="mb-3">
+          {{regform.email.label(class_='form-label')}}
+          {{regform.email(class_='form-control')}}
+          <span id="feedback"></span>
+          {% for error in regform.email.errors %}
+          <span class="text-danger">{{error}}</span>
+          {%endfor%}
+
+        </div>
+
+        <!-- phone   -->
+
+
+        <!-- password  -->
+
+           <div class="mb-3">
+            {{regform.password.label(class_='form-label')}}
+            {{regform.password(class_='form-control')}}
+            <span id="feedback"></span>
+          {% for error in regform.password.errors %}
+          <span class="text-danger">{{error}}</span>
+          {%endfor%}
+        </div>
+
+        <!-- confirm  -->
+
+        <div class="mb-3">
+          {{regform.confirm_password.label(class_='form-label')}}
+          {{regform.confirm_password(class_='form-control')}}
+          <span id="feedback"></span>
+          {% for error in regform.confirm_password.errors %}
+          <span class="text-danger">{{error}}</span>
+          {%endfor%}
+        </div>
+        {{regform.submit(class_='btn btn-success w-100 rounded-pill')}}
+
+        <!-- 
+          <div class="d-flex justify-content-center">
+            <p class="mb-0 me-2">Already have an account?</p>
+            <a href="login.html">Login</a>
+          </div> -->     
+        </form>
+
+        
+
+        <div class="text-center mt-3">
+          <div class="d-flex align-items-center my-3">
+            <hr class="flex-grow-1">
+            <a href="{{url_for('apartments')}}" class="">Or</a>
+      
+            <hr class="flex-grow-1">
+          </div>
+          <a href="{{ url_for('google_login') }}" class="google-btn">
+            <img src="{{ url_for('static', filename='pic/download.png') }}" alt="Google logo">
+            <span>Register with Google</span>
+        </a>
+
+        
+          </div>
+        
+        <p class="text-center mt-3">
+        Already have an account? <a style="color: blue;"  href="{{url_for('user_login')}}">Login</a>
+      </p>
+
+
+
+
+
+   </div>
+        </div>
+      </div>
+
+
+
+
+
+    </div>
+    
+  
+
+
+<script src="{{ url_for('static', filename='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $('#email').change(function(){
+      var chosen_email=$(this).val();
+      var data2send ="demail="+ chosen_email;
+      $('#feedback').load('{{url_for("check_email")}}',data2send,function(){});
+    })
+  })
+</script>
+
+</body>
+</html>

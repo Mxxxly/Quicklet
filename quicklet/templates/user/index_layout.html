@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickLet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ql.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="icon"  type="image/ico" href="pic/quickleticon.ico"> 
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lobster&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pic/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pic/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pic/apple-touch-icon.png') }}">
+
+  
+
+    <style> 
+   
+    </style>
+</head>
+<body class="index-body">
+    <!-- container -->
+ <div class="container-fluid">
+    <!-- header -->
+     <div class="box">
+      <a href="{{url_for('contact')}}"><img src="/static/pic/chat.png" style="width: 45px;" alt="stickypicturechatbox"></a>
+     </div>
+  <div class="row">
+
+    <div class="col-md-12">
+      <nav class="navbar navbar-expand-lg mybg fixed-top">
+          <div class="container-fluid">
+  
+              <a class="navbar-brand qlbrand" href="{{url_for('home_page')}}">Quick<span class="qlsp">Let</span></a>
+  
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                      data-bs-target="#navbarSupportedContent">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+  
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  
+                  <!-- LEFT -->
+                  <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+  
+                      <li class="nav-item">
+                          <a class="nav-link" href="{{ url_for('home_page') }}">Home</a>
+                      </li>
+  
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                          Apartments
+                        </a>
+                        <ul class="dropdown-menu">
+                          {% for c in categories %}
+                          <!-- value is category_id so backend filters by category_id -->
+                          <li><a class="dropdown-item" href="{{url_for('filter_apartments', category=c.category_id)}}">{{c.category_name}}</a></li>
+                        {% endfor %}
+                          
+
+                        </ul>
+                      </li>
+  
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                          Cities
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{{ url_for('filter_apartments', state=1) }}">Lagos</a></li>
+                          <li><a class="dropdown-item" href="{{ url_for('filter_apartments', state=2) }}">Abuja</a></li>
+                          <li><a class="dropdown-item" href="{{url_for('apartments')}}">Ibadan Coming Soon</a></li>
+                        </ul>
+                      </li>
+                      {%if not user%}
+
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('agent_login')}}">List Property</a>
+                      </li>
+                      {%endif%}
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('about_us')}}">About Us</a>
+                      </li>
+  
+                      <li class="nav-item">
+                        <a href="{{url_for('contact')}}" class="nav-link">Contact Us</a>
+                      </li>
+
+
+                      {% if not user and not agent %}
+                  
+                      <!-- REGISTER -->
+                      <li class="nav-item dropdown mx-1">
+                        <a class="btn btn-warning dropdown-toggle text-dark" href="#" role="button"
+                           id="registerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                          Register
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="registerDropdown">
+                          <li><a class="dropdown-item" href="{{ url_for('user_register') }}">User</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="{{ url_for('agent_register') }}">Agent</a></li>
+                        </ul>
+                      </li>
+                      <!-- LOGIN -->
+                      <li class="nav-item dropdown mx-1">
+                        <a class="btn btn-warning dropdown-toggle text-dark" href="#" role="button"
+                           id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                          Login
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="loginDropdown">
+                          <li><a class="dropdown-item" href="{{ url_for('user_login') }}">User</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="{{ url_for('agent_login') }}">Agent</a></li>
+                        </ul>
+                      </li>
+    
+                  {% elif user %}
+                      <!-- USER LOGGED IN -->
+                  <a href="{{url_for('user_dashboard')}}" class="btn btn-warning mx-2 text-dark"> Hi, {{ user.user_fname|capitalize }}</a>
+    
+                      <!-- <span class="nav-link text-light fw-bold me-3">
+                          Hello, {{ user.user_fname }}
+                      </span> -->
+                      <a href="{{ url_for('user_logout') }}" 
+                         class="btn btn-danger"><i class="fas fa-power-off"></i> Logout</a>
+    
+                  {% elif agent %}
+                      <!-- AGENT LOGGED IN -->
+                  <a href="{{url_for('agent_dashboard')}}" class="btn btn-warning mx-2 text-dark">  Hi, {{ agent.agent_fname|capitalize }}</a>
+    
+                      <!-- <span class="nav-link text-light fw-bold me-3">
+                          Hello, {{ agent.agent_fname }}
+                      </span> -->
+                      <a href="{{ url_for('agent_logout') }}" 
+                         class="btn btn-danger"><i class="fas fa-power-off"></i> Logout</a>
+                  {% endif %}
+  
+                  </ul>
+  
+                 
+  
+              </div>
+          </div>
+      </nav>
+  </div>
+  
+  <!-- This is where the overlay div was  -->
+   <!-- this is the new one i prefer  -->
+
+   <div class="herosec">
+    <div class="container">
+      <div class="row align-items-center gy-4">
+  
+        <!-- LEFT TEXT -->
+        <div class="col-lg-5 text-center text-lg-start">
+  
+          <span class="hero-badge d-inline-block mb-3">
+            Trusted Short-Let Platform
+          </span>
+  
+          <h2 class="hero-title mytxt">
+            Find your next stay <br>
+            with <a class="navbar-brand qlbrand d-inline-block ms-1"
+               href="{{url_for('home_page')}}">
+              Quick<span class="qlsp">Let</span>
+            </a>
+          </h2>
+  
+          <p class="hero-sub mt-3 mytxt">
+            Search verified apartments and short lets across Nigeria.
+          </p>
+  
+        </div>
+  
+        <!-- RIGHT FORM -->
+        <div class="col-lg-7">
+  
+          <div class="form-card">
+  
+            <form action="{{ url_for('filter_apartments') }}" method="get">
+  
+              <!-- ROW 1 -->
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label">Location</label>
+                  <input type="text" name="location" class="form-control"
+                         placeholder="Lekki, Ikeja, Egbeda">
+                </div>
+  
+                <div class="col-md-6">
+                  <label class="form-label">Category</label>
+                  <select name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for c in categories %}
+                      <option value="{{ c.category_id }}">{{ c.category_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+  
+              <!-- ROW 2 -->
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label">Check-In</label>
+                  <input type="date" name="check_in" class="form-control">
+                </div>
+  
+                <div class="col-md-6">
+                  <label class="form-label">Check-Out</label>
+                  <input type="date" name="check_out" class="form-control">
+                </div>
+              </div>
+  
+              <!-- ROW 3 -->
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label">State</label>
+                  <select name="state" id="state" class="form-select">
+                    <option value="">All States</option>
+                    {% for s in states %}
+                      <option value="{{ s.state_id }}">{{ s.state_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+  
+                <div class="col-md-6">
+                  <label class="form-label">LGA</label>
+                  <select name="lga" id="lga" class="form-select">
+                    <option value="">All LGAs</option>
+                  </select>
+                </div>
+              </div>
+  
+              <button type="submit" class="btn btn-purple w-100 py-3 fw-semibold">
+                Search Apartments
+              </button>
+  
+            </form>
+  
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+  
+
+
+
+
+
+
+
+
+
+   <!-- second option  -->
+
+   <!-- <div class="herosec">
+    <div class="form-card">
+        <h4>Find your next Stay with QuickLet</h4>
+        <p class="text-muted">Search apartments, rooms, and short lets easily.</p>
+        <form action="" method="get"> 
+            <div class="mb-3">
+                <label class="form-label">Location</label>
+                <input type="text" name="location" class="form-control" placeholder="Where are you going?">
+            </div>
+            <div class="row g-2 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Check-In</label>
+                    <input type="date" name="check_in" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Check-Out</label>
+                    <input type="date" name="check_out" class="form-control">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Apartment Type</label>
+                <select name="apt_type" class="form-select">
+                    <option value="">All Types</option>
+                    <option value="Studio">Studio</option>
+                    <option value="1 Bedroom">1 Bedroom</option>
+                    <option value="2 Bedrooms">2 Bedrooms</option>
+                    <option value="3 Bedrooms">3 Bedrooms</option>
+                    <option value="4 Bedrooms">4 Bedrooms</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-purple w-100">Search</button>
+        </form>
+    </div>
+
+    <div class="heroimg"></div>
+</div> -->
+
+
+
+
+
+
+
+
+
+    <!-- <div class="herosec">
+        <div class="form-card">
+            <h4>Find your next Stay with QuickLet</h4>
+            <p class="text-muted">Search apartments, rooms, and short lets easily.</p>
+            <form action="" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-control" placeholder="Where are you going?">
+                </div>
+                <div class="row g-2 mb-3">
+                    <div class="col">
+                        <label class="form-label">Check-In</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Check-Out</label>
+                        <input type="date" class="form-control">
+                    </div>
+                </div>
+                <button class="btn btn-purple w-100 ">Search</button>
+            </form>
+        </div>
+
+        <div class="heroimg"></div>
+
+
+    </div>
+  -->
+
+  <!-- why choose us  -->
+   {%block about%}
+   <div class="row">
+
+    <div class="col-md-12 text-center mt-4 mb-4">
+      <h2 class="mytxt">Where Every Stay Feels Like Home...</h2>
+    </div>
+    <div class="col-md-4 text-center">
+     <img src="{{url_for('static', filename='pic/calendar.png')}}" alt="" class="cofimg mb-3">
+     <br>
+     <h3 class="mb-3">Booking Simplified</h3>
+     <p>We've simplified online Serviced Apartment booking for seamless customization to traveler's needs.</p>
+      
+     
+    </div>
+    <div class="col-md-4 text-center">
+      <img src="{{url_for('static', filename='pic/home.png')}}" alt="" class="cofimg mb-3">
+      <br> 
+      <h3 class="mb-3">Safety like Home</h3>
+      <p>Our partners regularly inspect apartments for hygiene, security, and safety to maintain advertised standards.</p>
+    </div>
+    <div class="col-md-4 text-center">
+      <img src="{{url_for('static', filename='pic/coffee2.png')}}" alt="" class="cofimg mb-3">
+      <br> 
+      <h3 class="mb-3">Hospitality</h3>
+      <p>We provide familial hospitality, ensuring you're fully connected to your community through partnerships.</p>
+    </div>
+   </div>
+{%endblock about%}
+
+   <div class="col-md-12 text-center mt-5 mb-4">
+    
+     <h4 class="mytxt mtf">{%block avl%} Explore Our Apartments in Lagos  {%endblock avl%}</h4>
+   </div>
+  
+<!-- Filter Bar -->
+
+   {%block sf%}
+<div class="row mb-4 justify-content-center">
+  <div class="col-12 col-lg-10">
+    <div class="filter-card p-4 shadow-sm rounded-4">
+      <div class="row g-2 align-items-center">
+        <div class="col-md-4">
+          <input type="text" id="filter-location" class="form-control" placeholder="Enter location">
+        </div>
+        <div class="col-md-4">
+          <select id="filter-type" class="form-select">
+            <option value="">All Types</option>
+            <option value="Studio">Studio</option>
+            <option value="1 Bedroom">1 Bedroom</option>
+            <option value="2 Bedrooms">2 Bedrooms</option>
+            <option value="3 Bedrooms">3 Bedrooms</option>
+            <option value="4 Bedrooms">4 Bedrooms</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <button id="apply-filter" class="btn btn-purple w-100">Filter Apartments</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%endblock sf%}
+
+
+
+
+
+
+
+
+<!-- <div class="row mb-4 mt-3">
+  <div class="col-md-12">
+      <div class="card p-3 shadow-sm">
+          <form id="filterForm" class="row g-2 align-items-center">
+              <div class="col-md-3">
+                  <label for="state" class="form-label">State / City</label>
+                  <select id="state" class="form-select">
+                      <option value="">All States</option>
+                      <option value="Lagos">Lagos</option>
+                      <option value="Abuja">Abuja</option>
+                  </select>
+              </div>
+              <div class="col-md-3">
+                  <label for="lga" class="form-label">LGA</label>
+                  <select id="lga" class="form-select">
+                      <option value="">All LGAs</option>
+
+                  </select>
+              </div>
+              <div class="col-md-3">
+                  <label for="type" class="form-label">Apartment Type</label>
+                  <select id="type" class="form-select">
+                      <option value="">All Types</option>
+                      <option value="Studio">Studio</option>
+                      <option value="1 Bedroom">1 Bedroom</option>
+                      <option value="2 Bedrooms">2 Bedrooms</option>
+                      <option value="3 Bedrooms">3 Bedrooms</option>
+                      <option value="4 Bedrooms">4 Bedrooms</option>
+                  </select>
+              </div>
+              <div class="col-md-3 d-flex align-items-end">
+                  <button type="submit" class="btn btn-purple w-100">Filter</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div> -->
+
+
+<!-- this was where the previous cards were  --> 
+ <!-- i want to use anothr styling -->
+  {%block filter%}
+ <div class="row">
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/3bed1.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/3bed3.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/aptpic3.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/bogoapt1.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/3bed1.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/house1.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/3bed1.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/3bed1.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/3bed1.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/3bed1.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/3bed1.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <div class="col-md-3">
+        <div class=" mb-5">
+            <div class="aptpic ">
+                <img class="cimg1" src="static/pic/3bed1.jpg" alt="">
+                <div class="aptinfos">
+                    <h6 class="apttitle mt-2">The Residence Apartments</h6>
+                    <p class="text-muted" style="font-size: 10px;">Egbeda Studio • 2 guests • Free Wi‑Fi • 24/7 power backup</p>
+                    
+                    <div class="aptpriceandview">
+                        <h5 style="font-size: 15px;">₦75,000<span class="aptsp">/Night</span></h5>
+                        <a style="font-size:15px;" href="apartmentsdisplay.html" class="btn btn-purple">View </a>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+
+    <!-- hr line practical important i might need it again --> 
+    <div class="d-flex align-items-center my-3">
+      <hr class="flex-grow-1">
+      <a href="{{url_for('apartments')}}" class="btn btn-purple w-60 ">View More</a>
+
+      <hr class="flex-grow-1">
+    </div>
+
+
+
+
+  
+ </div>
+
+{%endblock filter%}
+
+{%block amenities%}
+ <div class="row">
+   <!-- Amenities Section -->
+<div class="container amenities-section mt-5">
+  <h3 class="text-center mb-5 mt-4 mytxt mtf">QuickLet Standard Amenities</h3>
+  <div class="row text-center ">
+
+    <div class="col-6 col-md-3">
+      <img src="static/pic/wifi.png" alt="Wi-Fi" class="mb-2" style="width:50px;">
+      <h6>Free Wi-Fi</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="static/pic/kitchen.png" alt="Kitchen" class="mb-2" style="width:50px;">
+      <h6>Fully Equipped Kitchen</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="static/pic/parking.png" alt="Parking" class="mb-2" style="width:50px;">
+      <h6>Secure Parking</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="static/pic/smart-tv.png" alt="TV" class="mb-2" style="width:50px;">
+      <h6>Smart TV</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="static/pic/swimming-pool.png" alt="Swimming Pool" class="mb-2" style="width:50px;">
+      <h6>Swimming Pool</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="static/pic/air-conditioner.png" alt="Air Conditioning" class="mb-2" style="width:50px;">
+      <h6>Air Conditioning</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="static/pic/double-bed3.png" alt="Comfortable Beds" class="mb-2" style="width:50px;">
+      <h6>Comfortable Beds</h6>
+    </div>
+ 
+    <div class="col-6 col-md-3">
+      <img src="static/pic/products.png" alt="Daily Cleaning" class="mb-2" style="width:50px;">
+      <h6>Daily Cleaning</h6>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+  </div>
+{%endblock%}
+
+   <!-- reviews  -->
+  <!-- <div class="row mt-4">
+    <div class="col-md-12 text-center">
+      <h3 class="mb-4">Guest Reviews </h3>
+      <p class="mb-3">"QuickLet made my Lagos trip stress-free! The apartment was exactly as described." <br><strong>- Chika O.</strong></p>
+
+    </div>
+
+
+
+  </div> -->
+
+  {%block review%}
+
+  <div class="container my-5">
+  <h3 class="text-center mb-4 mytxt mtfs">Guest Reviews</h3>
+
+  <div class="review-slider d-flex overflow-hidden">
+    <div class="d-flex gap-4 animate-scroll">
+
+      <!-- Review 1 -->
+      <div class="card shadow-sm border-0 rounded-4 p-3" style="min-width: 300px;">
+        <p class="text-muted fst-italic">“QuickLet made my Lagos trip stress-free! The apartment was spotless and exactly as described.”</p>
+        <h6 class="fw-bold mt-3">- Chika O.</h6>
+        <p class="text-warning mb-0">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+        </p>
+      </div>
+
+      <!-- Review 2 -->
+      <div class="card shadow-sm border-0 rounded-4 p-3" style="min-width: 300px;">
+        <p class="text-muted fst-italic">“The Lekki apartment was top-notch. I’ll definitely be booking again for my next business trip.”</p>
+        <h6 class="fw-bold mt-3">- James A.</h6>
+        <p class="text-warning mb-0">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </p>
+      </div>
+
+      <!-- Review 3 -->
+      <div class="card shadow-sm border-0 rounded-4 p-3" style="min-width: 300px;">
+        <p class="text-muted fst-italic">“Great hospitality and seamless check-in. It truly felt like home away from home.”</p>
+        <h6 class="fw-bold mt-3">- Amaka I.</h6>
+        <p class="text-warning mb-0">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+        </p>
+      </div>
+
+      <!-- Review 4 -->
+      <div class="card shadow-sm border-0 rounded-4 p-3" style="min-width: 300px;">
+        <p class="text-muted fst-italic">“Booking was super easy. The apartment had fast Wi-Fi and a cozy setup — just what I needed.”</p>
+        <h6 class="fw-bold mt-3">- Tunde K.</h6>
+        <p class="text-warning mb-0">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{%endblock review%}
+
+  <!-- footer  -->
+
+
+  <div class="row footbac">
+   <div class="col-md-4 text-center  mt-4">
+   <h3 class="footcol mytxt mtf mb-3">Support and Resourses</h3>
+   <p> <a href="#" class="footcol">About Us</a></p>
+    <p><a href="#" class="footcol">Privacy Policy</a></p>
+   <p><a href="#" class="footcol">Refund & Cancellation</a></p>
+   <p><a href="#" class="footcol">Terms & Conditions</a></p>
+    </div>
+     
+
+    <div class="col-md-4 text-center mt-4">
+     <h3 class="footcol mtf mytxt mb-3">Booking and Enquires </h3>
+   <p class="footcol"> <span><i class="fas fa-phone-alt me-2 "></i> +234 703 985 3440</span></p>
+    <p class="footcol"><span><i class="fas fa-envelope me-2"></i> Tomide@quicklet.com</span></p>
+   <p class="footcol"><span><i class="fas fa-map-marker-alt me-2"></i> 5,Ogunsiji Allen Avenue Lagos</span></p>
+   
+    
+   </div>
+
+
+    <div class="col-md-4 text-center mt-4">
+      <h3 class="footcol mtf mytxt mb-3">QuickLet Socials </h3>
+    <a href="#"><i class="fab fa-facebook fa-lg text-light me-3"></i></a>
+    <a href="#"><i class="fab fa-instagram fa-lg text-light me-3"></i></a>
+    <a href="#"><i class="fab fa-twitter fa-lg text-light me-3"></i></a>
+    <a href="#"><i class="fab fa-whatsapp fa-lg text-light me-3"></i></a>
+  
+    
+   </div>
+   <hr style="color: white;">
+
+   <div class="col-md-12 text-center">
+     <p style="color:white"> &copy 2025 QuickLet Apartments | All Rights Reserved</p>
+   </div>
+
+
+  </div>
+
+ 
+
+
+
+
+
+
+
+
+</div>   
+
+</body>
+<!-- <script src="jquery.min.js"></script> -->
+<script src="{{ url_for('static', filename='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+  $('#state').change(function(){
+    var stateID = $(this).val();
+    $.ajax({
+      url: '/get/lgas/',   // your LGA route that returns <option> tags
+      data: { state_id: stateID },
+      success: function(resp){
+        $('#lga').html(resp);  // injects <option> tags returned by server
+      },
+      error: function(){
+        $('#lga').html('<option value="">All LGAs</option>');
+      }
+    });
+  });
+});
+
+</script>
+</html>

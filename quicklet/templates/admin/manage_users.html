@@ -1,0 +1,62 @@
+{%extends 'admin/admin_layout.html'%}
+
+{%block admin%}
+            <!-- All Users -->
+            <div class="card mb-4">
+                
+    {%with messages = get_flashed_messages(with_categories=True) %}
+    {%if messages %}
+ 
+      {%for category,message in messages%}
+          {%if category == 'success'%}
+              <div class="alert alert-success">
+                <p>{{message}}</p>
+              </div>
+          {%else%}
+            <div class="alert alert-danger">
+              <p>{{message}}</p>
+            </div>
+
+          {%endif%}
+      {%endfor%}
+
+    {%endif%}
+    {%endwith%}
+
+                <div class="card-header bg-secondary text-white">
+                    All Users
+                </div>
+                <div class="card-body">
+                    <table class="table align-middle table-striped agent-table text-center">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Date Joined</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for u in users %}
+                            <tr>
+                                <td>{{ u.user_fname }}</td>
+                                <td>{{ u.user_email }}</td>
+                                <td>{{ u.user_regdate.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    <form action="{{ url_for('admin_delete_user', user_id=u.user_id) }}" method="POST">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                                        <button class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Delete this user?')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+{%endblock admin%}

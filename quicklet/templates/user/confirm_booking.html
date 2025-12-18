@@ -1,0 +1,77 @@
+{% include 'user/nav.html' %}
+
+<div class="container my-5 d-flex justify-content-center">
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%; border-radius: 15px;">
+        
+        <!-- Apartment Image -->
+        {% if apartment.pictures %}
+            <img src="{{ url_for('static', filename=apartment.pictures[0].apt_image) }}" 
+                 class="card-img-top rounded mb-3" alt="Apartment Image" style="height: 250px; object-fit: cover;">
+        {% else %}
+            <img src="{{ url_for('static', filename='pic/default.jpg') }}" 
+                 class="card-img-top rounded mb-3" alt="Default Image" style="height: 250px; object-fit: cover;">
+        {% endif %}
+
+        <!-- Heading and back button -->
+        <div class="d-flex align-items-center mb-3">
+
+            <a href="{{ url_for('apartment_display', apartment_id=apartment.apartment_id) }}" class="me-3 ">
+                <i class="fa-solid fa-arrow-left normal-icon"></i>
+            </a>
+            <h2 class="m-0">Confirm and Pay</h2>
+        </div>
+
+        <!-- Booking Details -->
+        <h5 class="mb-3">Booking Confirmation</h5>
+        <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item"><strong>Apartment:</strong> {{ apartment.apartment_title }}</li>
+            <li class="list-group-item"><strong>Location:</strong> {{ apartment.apartment_address }}</li>
+            <li class="list-group-item"><strong>Check-in:</strong> {{ check_in }}</li>
+            <li class="list-group-item"><strong>Check-out:</strong> {{ check_out }}</li>
+            <li class="list-group-item"><strong>Guests:</strong> {{ guests }}</li>
+            <li class="list-group-item"><strong>Price per night:</strong> ₦{{ "{:,.0f}".format(apartment.apartment_price) }}</li>
+            {% if user %}
+                <li class="list-group-item"><strong>Booking by:</strong> {{ user.user_fname|capitalize }}</li>
+            {% endif %}
+        </ul>
+
+
+        {% if apartment.agent %}
+        <div class="card mb-3 p-3" style="border-radius: 15px; background-color: #f8f9fa;">
+            
+            <h5 class="mb-3">Agent Details</h5>
+            <div class="d-flex align-items-center">
+                {%if apartment.agent and apartment.agent.agent_avatar %}
+                <img src="/static/uploads/{{apartment.agent.agent_avatar}}" alt="dp" class="rounded-circle me-3" 
+                style="width: 60px; height: 60px; object-fit: cover;" >
+                {%endif%}
+                
+             
+                <div>
+                    
+                    <h6 class="m-0">{{ apartment.agent.agent_fname|capitalize }}</h6>
+                    <small>{{ apartment.agent.agent_email }}</small><br>
+                    <small>{{ apartment.agent.agent_phone }}</small>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+
+
+        <!-- Confirm Booking Form -->
+        <form action="{{ url_for('final_confirmation') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="apartment_id" value="{{ apartment.apartment_id }}">
+            <input type="hidden" name="check_in" value="{{ check_in }}">
+            <input type="hidden" name="check_out" value="{{ check_out }}">
+            <input type="hidden" name="guests" value="{{ guests }}">
+
+            <button type="submit" class="btn btn-purple w-100">Confirm & Pay</button>
+        </form>
+    </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

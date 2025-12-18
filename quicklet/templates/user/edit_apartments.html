@@ -1,0 +1,151 @@
+{% extends "user/agentdashboard_page.html" %}
+
+{% block dashtitle %}
+<h3 class="mb-3">Edit Apartment</h3>
+{% endblock dashtitle %}
+
+{% block dashcontent %}
+<h6>Edit your apartment listing. Fill in the fields below. Required fields are marked.</h6>
+
+<form id="editApartmentForm" method="POST" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+
+  <div class="row g-4">
+
+    <!-- LEFT COLUMN -->
+    <div class="col-lg-7">
+
+      <!-- Title -->
+      <div class="mb-3">
+        {{ form.title.label(class="form-label") }} <span class="required">*</span>
+        {{ form.title(class_='form-control') }}
+        {% for error in form.title.errors %}
+          <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Category -->
+<div class="mb-3">
+    <label for="category">Apartment Category</label>
+    <select name="category_id" class="form-control">
+      {% for c in categories %}
+        <option value="{{ c.category_id }}" 
+          {% if apartment.apartment_category_id == c.category_id %} selected {% endif %}>
+          {{ c.category_name }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  
+  <!-- State / LGA -->
+  <div class="mb-3 row">
+    <div class="col-md-6">
+      <label for="state">State</label>
+      <select name="state" id="state" class="form-select">
+        {% for s in states %}
+          <option value="{{ s.state_id }}" 
+            {% if apartment.apartment_stateid == s.state_id %} selected {% endif %}>
+            {{ s.state_name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  
+    <div class="col-md-6">
+      <label for="lga">LGA</label>
+      <select name="lga" id="lga" class="form-select">
+        {% for l in lgas %}  {# pass all lgas from route #}
+          <option value="{{ l.lga_id }}" 
+            {% if apartment.apartment_lga_id == l.lga_id %} selected {% endif %}>
+            {{ l.lga_name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  
+
+      <!-- Full Description -->
+      <div class="mb-3">
+        {{ form.description.label(class="form-label") }}  <span class="required">*</span>
+        {{ form.description(class="form-control", rows="5") }}
+      </div>
+
+      <!-- Price + Currency -->
+      <div class="mb-3 row">
+        <div class="col-md-6">
+          {{ form.price.label(class="form-label") }} <span class="required">*</span>
+          <div class="input-group">
+            <span class="input-group-text">₦</span>
+            {{ form.price(class="form-control") }}
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          {{ form.currency.label(class="form-label") }}
+          {{ form.currency(class="form-select", readonly=True) }}
+        </div>
+      </div>
+
+      <!-- City / Area -->
+      <div class="mb-3 row">
+        <div class="col-md-6">
+          {{ form.city.label(class="form-label") }} <span class="required">*</span>
+          {{ form.city(class="form-control") }}
+        </div>
+        <div class="col-md-6">
+          {{ form.area.label(class="form-label") }}
+          {{ form.area(class="form-control") }}
+        </div>
+      </div>
+
+      <!-- Min Nights / Max Guests -->
+      <div class="mb-3 row">
+        <div class="col-md-6">
+          {{ form.min_nights.label(class="form-label") }}
+          {{ form.min_nights(class="form-control") }}
+        </div>
+        <div class="col-md-6">
+          {{ form.max_guests.label(class="form-label") }}
+          {{ form.max_guests(class="form-control") }}
+        </div>
+      </div>
+
+    </div> <!-- END LEFT COLUMN -->
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-lg-5">
+
+      <!-- Existing Images -->
+      <div class="mb-3">
+        <label class="form-label">Existing Image</label>
+        <div class="d-flex flex-wrap gap-2">
+          {% for img in apartment.pictures %}
+            <div style="width:150px; height:150px; overflow:hidden; border:1px solid #ccc; border-radius:5px;">
+              <img src="{{ url_for('static', filename=img.apt_image) }}" 
+                   style="width:100%; height:100%; object-fit:cover;" alt="Apartment Image">
+            </div>
+          {% else %}
+            <p>No images uploaded yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Upload New Image -->
+      <div class="mb-3">
+        {{ form.photos.label(class="form-label") }}
+        {{ form.photos(class="form-control") }}
+        <div class="form-text">Upload additional JPG or PNG image (optional).</div>
+      </div>
+
+      <!-- Submit -->
+      <div class="d-grid gap-2 mt-4">
+        <button type="submit" class="btn btn-purple btn-lg">Update Apartment</button>
+      </div>
+
+    </div> <!-- END RIGHT COLUMN -->
+
+  </div> <!-- END ROW -->
+
+</form>
+{% endblock dashcontent %}

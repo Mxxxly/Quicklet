@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Page</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickLet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap/css/bootstrap.min.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ql.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pic/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pic/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pic/apple-touch-icon.png') }}">
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+
+
+
+    <link rel="stylesheet" type="text/css" href="static/fontawesome/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lobster&display=swap" rel="stylesheet">
+
+
+    <style> 
+     
+    </style>
+</head>
+<body class="dashboard-page-body">
+    <!-- container -->
+ <div class="container-fluid">
+    <!-- header -->
+  <div class="row">
+    
+    <div class="col-md-12">
+        <nav class="navbar navbar-expand-lg mybg fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand qlbrand " href="#">Quick<span class="qlsp">Let</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a href="{{url_for('home_page')}}" class="btn btn-warning mx-1">Home</a>
+  
+          </li>
+
+        <li class="nav-item">
+          <a href="{{url_for('contact')}}" class="btn btn-success mx-2" >Contact Us </a>
+        </li>
+      </ul>
+      
+        
+
+        <a href="{{url_for('user_logout')}}" class="btn text-danger btn-outline-danger" ><i class="fas fa-power-off"></i> Logout</a>
+    
+    </div>
+  </div>
+</nav>
+    </div>
+  </div>  

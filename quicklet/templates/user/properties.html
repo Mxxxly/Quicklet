@@ -1,0 +1,90 @@
+{% extends 'user/index_layout.html' %}
+
+{% block filter %}
+
+<div class="container mt-5">
+    <div class="row">
+
+        {% if apartments %}
+            {% for apt in apartments %}
+                <div class="col-md-3 mb-4">
+                    <div class="card shadow-sm border-0 h-100">
+
+
+                        {% if apt.pictures %}
+                        <img class="cimg1" src="{{ url_for('static', filename=apt.pictures[0].apt_image) }}" alt="Apartment Image">
+                        {% else %}
+                        <img class="cimg1" src="{{ url_for('static', filename='pic/default.jpg') }}" alt="Default Image">
+                        {% endif %}
+
+                        <!-- <img src="{{ url_for('static', filename=apt.pictures[0]) }}"
+                             class="card-img-top"
+                             style="height:180px; object-fit:cover;"
+                             alt="{{ apt.apartment_title }}"> -->
+
+                        <div class="card-body aptinfos">
+                            
+                            <h6 class="fw-bold">{{ apt.apartment_title }}</h6>
+
+                            <p class="text-muted small mb-1">
+                                {{ apt.apartment_address }}
+                            </p>
+
+                            <p class="text-muted small">
+                                {{ apt.apartment_guests }} guests • Free Wi-Fi • 24/7 Power
+                            </p>
+
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <h5 class="text-purple fw-bold" style="font-size: 17px;">
+                                    ₦{{ "{:,.0f}".format(apt.apartment_price) }}
+                                    <span class="text-muted" style="font-size: 12px;">/night</span>
+                                </h5>
+
+                                <a href="{{ url_for('apartment_display', apartment_id=apt.apartment_id) }}"
+                                   class="btn btn-purple btn-sm">
+                                    View
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        
+        {% else %}
+            <div class="col-12 text-center mt-4">
+                <p class="text-muted">No available apartment </p>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <div class="d-flex align-items-center my-3 justify-content-center">
+        <hr class="flex-grow-1">
+        <a href="{{ url_for('apartments') }}" class="btn btn-purple px-4">View More</a>
+        <hr class="flex-grow-1">
+    </div>
+
+</div>
+
+{% endblock filter %}
+
+{%block avl%}
+    Available Properties
+{%endblock avl%}
+
+{%block sf%}
+
+{%endblock sf%}
+
+
+{% block about %}
+
+{% endblock %}
+{% block amenities %}
+
+{% endblock %}
+
+{%block review %}
+
+{%endblock review%}

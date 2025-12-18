@@ -1,0 +1,431 @@
+{%include 'user/index_nav.html'%}
+<div class="herosec">
+  <div class="container">
+    <div class="row align-items-center gy-4">
+
+      <!-- LEFT TEXT -->
+      <div class="col-lg-5 text-center text-lg-start">
+
+        <span class="hero-badge d-inline-block mb-3">
+          Trusted Short-Let Platform
+        </span>
+
+        <h2 class="hero-title mytxt">
+          Find your next stay <br>
+          with <a class="navbar-brand qlbrand d-inline-block ms-1"
+             href="{{url_for('home_page')}}">
+            Quick<span class="qlsp">Let</span>
+          </a>
+        </h2>
+
+        <p class="hero-sub mt-3 mytxt">
+          Search verified apartments and short lets across Nigeria.
+        </p>
+
+      </div>
+
+      <!-- RIGHT FORM -->
+      <div class="col-lg-7">
+
+        <div class="form-card">
+
+          <form action="{{ url_for('filter_apartments') }}" method="get">
+
+            <!-- ROW 1 -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label">Location</label>
+                <input type="text" name="location" class="form-control"
+                       placeholder="Lekki, Ikeja, Egbeda">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Category</label>
+                <select name="category" class="form-select">
+                  <option value="">All Categories</option>
+                  {% for c in categories %}
+                    <option value="{{ c.category_id }}">{{ c.category_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <!-- ROW 2 -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label">Check-In</label>
+                <input type="date" name="check_in" class="form-control">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Check-Out</label>
+                <input type="date" name="check_out" class="form-control">
+              </div>
+            </div>
+
+            <!-- ROW 3 -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label">State</label>
+                <select name="state" id="state" class="form-select">
+                  <option value="">All States</option>
+                  {% for s in states %}
+                    <option value="{{ s.state_id }}">{{ s.state_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">LGA</label>
+                <select name="lga" id="lga" class="form-select">
+                  <option value="">All LGAs</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-purple w-100 py-3 fw-semibold">
+              Search Apartments
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+  <!-- why choose us  -->
+<div class="container mt-4">
+      <h2 class="text-center mb-4">Choose Apartment Category</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+            <a href="{{ url_for('filter_apartments', category=1) }}" class="text-decoration-none">
+
+            <div class="card apartment-card">
+            <img src="/static/pic/aptpic3.jpg" class="qlaptimg" alt="Studio">
+            <div class="card-body text-center aptinfos">
+              <h5>Studio Apartments</h5>
+              <p>Cozy and perfect for solo or couple stays</p>
+            </div>
+          </div>
+        </a>
+          
+        </div>
+
+        <div class="col-md-4">
+          <a href="{{ url_for('filter_apartments', category=2) }}" class="text-decoration-none">
+
+          <div class="card apartment-card">
+          <img src="/static/pic/ap2.jpg" class="qlaptimg" alt="Studio">
+          <div class="card-body text-center aptinfos">
+            <h5>Mini Flat</h5>
+            <p>Cozy and perfect for solo or couple stays</p>
+          </div>
+        </div>
+      </a>
+        
+      </div>
+
+      <div class="col-md-4">
+        <a href="{{ url_for('filter_apartments', category=3) }}" class="text-decoration-none">
+
+        <div class="card apartment-card">
+        <img src="/static/pic/ap3.jpg" class="qlaptimg" alt="Studio">
+        <div class="card-body text-center aptinfos">
+          <h5>1 Bedroom</h5>
+          <p>Cozy and perfect for solo or couple stays</p>
+        </div>
+      </div>
+    </a>
+      
+    </div>
+
+
+
+
+        <div class="col-md-4">
+          <a href="{{ url_for('filter_apartments', category=4) }}" class="text-decoration-none">
+
+          <div class="card apartment-card">
+          <img src="/static/pic/ap4.jpg" class="qlaptimg" alt="Studio">
+          <div class="card-body text-center aptinfos">
+            <h5>2 Bedroom</h5>
+            <p>Cozy and perfect for solo or couple stays</p>
+          </div>
+        </div>
+      </a>
+        
+      </div>
+
+
+      <div class="col-md-4">
+        <a href="{{ url_for('filter_apartments', category=5) }}" class="text-decoration-none">
+
+        <div class="card apartment-card">
+        <img src="/static/pic/ap5.jpg" class="qlaptimg" alt="Studio">
+        <div class="card-body text-center aptinfos">
+          <h5>3 Bedroom</h5>
+          <p>Cozy and perfect for solo or couple stays</p>
+        </div>
+      </div>
+    </a>
+      
+    </div>
+
+
+
+    <div class="col-md-4">
+      <a href="{{ url_for('filter_apartments', category=6) }}" class="text-decoration-none">
+
+      <div class="card apartment-card">
+      <img src="/static/pic/ap6.jpg" class="qlaptimg" alt="Studio">
+      <div class="card-body text-center aptinfos">
+        <h5>4+ Bedroom</h5>
+        <p>Cozy and perfect for solo or couple stays</p>
+      </div>
+    </div>
+  </a>
+    
+  </div>
+
+
+  <div class="col-md-6">
+    <a href="{{ url_for('filter_apartments', category=8) }}" class="text-decoration-none">
+
+    <div class="card apartment-card">
+    <img src="/static/pic/bungalow.jpg" class="qlaptimg" alt="Studio">
+    <div class="card-body text-center aptinfos">
+      <h5>Bungalow</h5>
+      <p>Cozy and perfect for solo or couple stays</p>
+    </div>
+  </div>
+</a>
+  
+</div>
+
+
+
+<div class="col-md-6">
+  <a href="{{ url_for('filter_apartments', category=7) }}" class="text-decoration-none">
+
+  <div class="card apartment-card">
+  <img src="/static/pic/duplex.jpg" class="qlaptimg" alt="Studio">
+  <div class="card-body text-center aptinfos">
+    <h5>Duplex</h5>
+    <p>Cozy and perfect for solo or couple stays</p>
+  </div>
+</div>
+</a>
+
+</div>
+
+
+
+
+      </div>
+    </div>
+
+ 
+
+
+ <div class="row">
+   <!-- Amenities Section -->
+<div class="container amenities-section mt-5">
+  <h3 class="text-center mb-5 mt-4">Amenities</h3>
+  <div class="row text-center ">
+
+    <div class="col-6 col-md-3">
+      <img src="/static/pic/wifi.png" alt="Wi-Fi" class="mb-2" style="width:50px;">
+      <h6>Free Wi-Fi</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="/static/pic/kitchen.png" alt="Kitchen" class="mb-2" style="width:50px;">
+      <h6>Fully Equipped Kitchen</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="/static/pic/parking.png" alt="Parking" class="mb-2" style="width:50px;">
+      <h6>Secure Parking</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="/static/pic/smart-tv.png" alt="TV" class="mb-2" style="width:50px;">
+      <h6>Smart TV</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="/static/pic/swimming-pool.png" alt="Swimming Pool" class="mb-2" style="width:50px;">
+      <h6>Swimming Pool</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="/static/pic/air-conditioner.png" alt="Air Conditioning" class="mb-2" style="width:50px;">
+      <h6>Air Conditioning</h6>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <img src="/static/pic/double-bed3.png" alt="Comfortable Beds" class="mb-2" style="width:50px;">
+      <h6>Comfortable Beds</h6>
+    </div>
+ 
+    <div class="col-6 col-md-3">
+      <img src="/static/pic/products.png" alt="Daily Cleaning" class="mb-2" style="width:50px;">
+      <h6>Daily Cleaning</h6>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+  </div>
+
+
+<!-- Accprdion -->
+  <div class="row mt-4 mb-4">
+    <div class="col-md-12 text-center ">
+      <h3>FAQ's</h3>
+    </div>
+    <div class="col-md-12 text-center">
+      <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Why QuickLet?
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+         QuickLet makes finding a shortlet apartment simple and stress-free.  
+        We offer well-furnished homes in secure neighborhoods, with flexible stay options that fit your lifestyle.  
+        Whether it’s for a few nights or several months, QuickLet guarantees comfort, transparency, and 24/7 support.  
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+       What Are the Payments Options Available
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+       <p>You can pay using a VISA or Master or AMEX credit card, Bank Transfers in 7 currencies i.e.; USD, GBP, EURO, CAD, SAR, AED & INR, Virtual Credit Cards, Forex Cards or multi-currency cards.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+       Will the rate of exchange change if I have confirmed the booking today and make the payment after 2 days?
+
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+       <p>The rate of exchange will be taken on the day you do the payment for your booking.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        Are the Apartments clean before the client Checks In
+      </button>
+    </h2>
+    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <p>Yes, the apartments are checked and cleaned before the clients checks in.</p>
+    </div>
+  </div>
+</div>
+
+
+ <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        What is Our Check In and Check Out time
+      </button>
+    </h2>
+    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+      Check-in starts at 2:00 PM, while check-out is at 12:00 PM.  
+        Early check-in or late check-out can be arranged on request, subject to availability.
+    </div>
+  </div>
+</div>
+    </div>
+
+
+
+  </div>
+
+
+
+  <!-- footer  -->
+
+
+  <div class="row footbac mt-3">
+   <div class="col-md-4 text-center  mt-4">
+   <h3 class="footcol">Support and Resourses</h3>
+   <p> <a href="#" class="footcol">About Us</a></p>
+    <p><a href="#" class="footcol">Privacy Policy</a></p>
+   <p><a href="#" class="footcol">Refund & Cancellation</a></p>
+   <p><a href="#" class="footcol">Terms & Conditions</a></p>
+    </div>
+     
+
+    <div class="col-md-4 text-center mt-4">
+     <h3 class="footcol">Booking and Enquires </h3>
+   <p class="footcol"> <span><i class="fas fa-phone-alt me-2 "></i> +234 703 985 3440</span></p>
+    <p class="footcol"><span><i class="fas fa-envelope me-2"></i> Tomide@quicklet.com</span></p>
+   <p class="footcol"><span><i class="fas fa-map-marker-alt me-2"></i> 5,Ogunsiji Allen Avenue Lagos</span></p>
+   
+    
+   </div>
+
+
+    <div class="col-md-4 text-center mt-4">
+      <h3 class="footcol">QuickLet Socials </h3>
+    <a href="#"><i class="fab fa-facebook fa-lg text-light me-3"></i></a>
+    <a href="#"><i class="fab fa-instagram fa-lg text-light me-3"></i></a>
+    <a href="#"><i class="fab fa-twitter fa-lg text-light me-3"></i></a>
+    <a href="#"><i class="fab fa-whatsapp fa-lg text-light me-3"></i></a>
+  
+    
+   </div>
+   <hr style="color: white;">
+
+   <div class="col-md-12 text-center">
+     <p style="color:white"> &copy 2025 QuickLet Apartments | All Rights Reserved</p>
+   </div>
+
+
+  </div>
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+</div>   
+
+</body>
+<script src="jquery.min.js"></script>
+
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon" />
+    <title>Quicklet Admin </title>
+
+    <!-- ========== All CSS files linkup ========= -->
+    <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/assets/fontawesome/css/all.css">
+    <link rel="stylesheet" href="/static/assets/css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lobster&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/pic/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/pic/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="static/pic/apple-touch-icon.png">
+
+    <style>
+        .qlbrand{
+    font-family: "lobster", cursive;
+      font-weight: bold;
+      font-size: 2rem;
+      color:  #ffffff;
+  }
+  .qlsp{
+      /* color:#70e000; */
+      color:#FFD700;
+
+  }
+  .mybg{
+    background: linear-gradient(90deg, #4E54C8 0%, #8F94FB 100%);
+  }
+  table.agent-table thead th {
+            background: linear-gradient(180deg,#8257e5,#6b3bd1) !important;
+            color: white !important;
+            border-color: transparent; /* optional: remove header borders */
+        }
+    </style>
+  </head>
+  <body>
+    <!-- ======== Preloader =========== -->
+    <div id="preloader">
+      <div class="spinner"></div>
+    </div>
+    <!-- ======== Preloader =========== -->
+
+    <!-- ======== sidebar-nav start =========== -->
+    <aside class="sidebar-nav-wrapper mybg">
+      <div class="navbar-logo">
+        <h2>
+          <a class="navbar-brand qlbrand" href="url_for('home_page')">Quick<span class="qlsp">Let</span></a>
+          <!-- <a href="url_for('home_page')">
+            Quicklet Admin
+          </a> -->
+        </h2>
+        
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="nav-item">
+            <a href="{{ url_for('admin_home') }}">
+        
+              <span class="text">Dashboard</span>
+            </a>
+          </li>
+          <span class="divider"><hr /></span>
+          <li class="nav-item">
+            <a href="{{ url_for('manage_agents') }}">
+             
+              <span class="text"> Manage Agents</span>
+            </a>
+          </li>
+          <span class="divider"><hr /></span>
+          <li class="nav-item">
+            <a href="{{ url_for('manage_users') }}">
+
+             
+              <span class="text"> Manage Users</span>
+            </a>
+          </li>
+           <span class="divider"><hr /></span>
+          <li class="nav-item">
+            <a href="{{ url_for('manage_apartments') }}">
+
+             
+              <span class="text"> Manage Apartments</span>
+            </a>
+          </li>
+           <span class="divider"><hr /></span>
+          <li class="nav-item">
+            <a href="{{url_for('admin_logout')}}">
+             
+              <span class="text"> Logout </span>
+            </a>
+          </li>
+
+   
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- ======== sidebar-nav end =========== -->
+
+    <!-- ======== main-wrapper start =========== -->
+    <main class="main-wrapper">
+      <!-- ========== header start ========== -->
+      <header class="header mybg">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-5 col-md-5 col-6">
+              <div class="header-left d-flex align-items-center">
+                <div class="menu-toggle-btn mr-15">
+                  <button id="menu-toggle" class="main-btn primary-btn btn-hover">
+                    <i class="lni lni-chevron-left me-2"></i> Menu
+                  </button>
+                </div>
+                <div class="header-search d-none d-md-flex">
+                  <form action="#">
+                    <input type="text" placeholder="Search..." />
+                    <button><i class="lni lni-search-alt"></i></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7 col-md-7 col-6">
+              <div class="header-right">
+
+                <!-- profile start -->
+                <div class="profile-box ml-15">
+                  <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="profile-info">
+                      <div class="info">
+                        <div class="image">
+                          <img src="/static/pic/profile_picture.jpg" alt="" />
+                        </div>
+                        <div>
+                          <h6 class="fw-500">Ayo Erinola</h6>
+                          <p>Admin</p>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
+                    <li>
+                      <div class="author-info flex items-center !p-1">
+                        <div class="image">
+                          <img src="/static/assets/pic/tomide.jpg" alt="image">
+                        </div>
+                         <div class="content">
+                          <h4 class="text-sm">Tomide Erinola</h4>
+                          <a class="text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white text-xs"
+                            href="#">erinola9@gmail.com</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                      <a href="#"> <i class="lni lni-exit"></i> Sign Out </a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- profile end -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- ========== header end ========== -->
+
+      <!-- ========== table components start ========== -->
+      <section class="table-components">
+        <div class="container-fluid">
+          <!-- ========== title-wrapper start ========== -->
+          <div class="title-wrapper pt-30">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <div class="title">
+                  <h2>{%block title%}{%endblock%}</h2>
+                </div>
+              </div>
+              <!-- end col -->
+              <div class="col-md-6">
+                <div class="breadcrumb-wrapper">
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item">
+                        <a href="#0">Dashboard</a>
+                      </li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        Admin
+                      </li>
+                    </ol>
+                  </nav>
+                </div>
+              </div>
+              <!-- end col -->
+            </div>
+            <!-- end row -->
+          </div>
+          <!-- ========== title-wrapper end ========== -->
+
+          <!-- ========== Page Content start ========== -->
+          {%block admin%}
+          <div class="row mb-30">         
+            <p>Any content can be here...</p>
+ 
+
+          </div>
+          {%endblock%}
+          <!-- ========== Page Content end ========== -->
+        </div>
+        <!-- end container -->
+      </section>
+      <!-- ========== table components end ========== -->
+
+      <!-- ========== footer start =========== -->
+      <footer class="footer">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6 order-last order-md-first">
+              <div class="copyright text-center text-md-start">
+            
+              </div>
+            </div>
+            <!-- end col-->
+            <div class="col-md-6">
+              <div class="terms d-flex justify-content-center justify-content-md-end">
+                <a href="#" class="text-sm">Term & Conditions</a>
+                <a href="#" class="text-sm ml-15">Privacy & Policy</a>
+              </div>
+            </div>
+          </div>
+          <!-- end row -->
+        </div>
+        <!-- end container -->
+      </footer>
+      <!-- ========== footer end =========== -->
+    </main>
+    <!-- ======== main-wrapper end =========== -->
+
+    <!-- ========= All Javascript files linkup ======== -->
+    <script src="/static/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/assets/js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
+    <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ql.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pic/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pic/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pic/apple-touch-icon.png') }}">
+
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lobster&display=swap" rel="stylesheet">
+    <style>
+      
+    </style>
+
+</head>
+<body class="user-login-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-expand-lg mybg fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand qlbrand " href="{{url_for('home_page')}}">Quick<span class="qlsp">Let</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+         <li class="nav-item">
+          <a class="nav-link" href="{{url_for('home_page')}}">Home</a>
+        </li>
+
+         <li class="nav-item">
+          <a class="nav-link" href="{{url_for('agent_dashboard')}}">List Property</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('about_us')}}">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{url_for('contact')}}" class="nav-link " >Contact Us </a>
+        </li>
+
+
+
+        {% if not user and not agent %}
+                  
+        <!-- REGISTER -->
+        <li class="nav-item dropdown mx-1">
+          <a class="btn btn-warning dropdown-toggle text-dark" href="#" role="button"
+             id="registerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Register
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="registerDropdown">
+            <li><a class="dropdown-item" href="{{ url_for('user_register') }}">User</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url_for('agent_register') }}">Agent</a></li>
+          </ul>
+        </li>
+        <!-- LOGIN -->
+        <li class="nav-item dropdown mx-1">
+          <a class="btn btn-warning dropdown-toggle text-dark" href="#" role="button"
+             id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Login
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="loginDropdown">
+            <li><a class="dropdown-item" href="{{ url_for('user_login') }}">User</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url_for('agent_login') }}">Agent</a></li>
+          </ul>
+        </li>
+
+    {% elif user %}
+        <!-- USER LOGGED IN -->
+    <a href="{{url_for('user_dashboard')}}" class="btn btn-warning mx-2 text-dark"> Hi, {{ user.user_fname|capitalize }}</a>
+
+        <!-- <span class="nav-link text-light fw-bold me-3">
+            Hello, {{ user.user_fname }}
+        </span> -->
+        <a href="{{ url_for('user_logout') }}" 
+           class="btn btn-danger"><i class="fas fa-power-off"></i> Logout</a>
+
+    {% elif agent %}
+        <!-- AGENT LOGGED IN -->
+    <a href="{{url_for('agent_dashboard')}}" class="btn btn-warning mx-2 text-dark">  Hi, {{ agent.agent_fname|capitalize }}</a>
+
+        <!-- <span class="nav-link text-light fw-bold me-3">
+            Hello, {{ agent.agent_fname }}
+        </span> -->
+        <a href="{{ url_for('agent_logout') }}" 
+           class="btn btn-danger"><i class="fas fa-power-off"></i> Logout</a>
+    {% endif %}
+      </ul>
+      
+        
+
+    
+    </div>
+  </div>
+</nav>
+        </div>
+      </div>
+      <div class="row mt-5 mb-5">
+        <div class="col-md-12  mb-5 d-flex justify-content-center align-items-center">
+            <div class="qlcont mt-5 ">
+
+    <!-- form  -->
+   <h2 class="navbar-brand qlbrand " href="#">Quick<span class="qlsp">Let</span></h2>
+    <h3 class="createacctxt">Login</h3>
+
+    {%with messages = get_flashed_messages(with_categories=True) %}
+    {%if messages %}
+ 
+      {%for category,message in messages%}
+          {%if category == 'success'%}
+              <div class="alert alert-success text-center">
+                <p>{{message}}</p>
+              </div>
+          {%else%}
+            <div class="alert alert-danger text-center">
+              <p>{{message}}</p>
+            </div>
+
+          {%endif%}
+      {%endfor%}
+
+    {%endif%}
+    {%endwith%}
+
+    <form action="" method="post" novalidate>
+        <!-- fn -->
+      {{log.csrf_token}}
+        
+       
+
+        <!-- email  -->
+         <div class="mb-3">
+          {{log.email.label(class_='form-label')}}
+          {{log.email(class_='form-control')}}
+        </div>
+
+        <!-- password  -->
+
+           <div class="mb-3">
+            {{log.password.label(class_='form-label')}}
+            {{log.password(class_='form-control')}}
+        </div>
+
+      {{log.submit(class_='btn btn-success w-100 rounded-pill')}}
+
+
+      <div class="text-center mt-3">
+        <div class="d-flex align-items-center my-3">
+          <hr class="flex-grow-1">
+          <a href="{{url_for('apartments')}}" class="">Or</a>
+    
+          <hr class="flex-grow-1">
+        </div>
+
+
+        <a href="{{ url_for('google_login') }}" class="google-btn">
+          <img src="{{ url_for('static', filename='pic/download.png') }}" alt="Google logo">
+          <span>Login with Google</span>
+      </a>
+<!-- 
+        <h6> Login with google </h6>
+          <a href="{{ url_for('google_login') }}"><img width="30px" height="30px" style="border-radius: 30px;" src="{{url_for('static', filename='pic/download.png')}}" alt=""></a> 
+           -->
+        </div>
+
+        <p class="text-center mt-3">
+       Don’t have an account? <a style="color: blue;" href="{{url_for('user_register')}}">Create An Account</a>
+      </p>
+      <div class="social-login text-center">
+        <a href="#" class="facebook">
+          <span class="icon-facebook mr-3"></span> 
+        </a>
+        <a href="#" class="twitter">
+          <span class="icon-twitter mr-3"></span> 
+        </a>
+        <a href="#" class="google">
+          <span class="icon-google mr-3"></span> 
+        </a>
+      </div>
+
+
+
+<!-- 
+            <div class="d-flex justify-content-center">
+                <p class="mb-0 me-2">Already have an account?</p>
+                <a href="login.html">Login</a>
+         </div> -->
+
+
+
+
+
+
+
+
+
+
+
+        
+
+    </form>
+
+
+
+
+
+
+   </div>
+        </div>
+      </div>
+
+
+
+
+
+    </div>
+    
+    <!-- Bootstrap JS -->
+<script src="{{ url_for('static', filename='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</div> <!-- end of page -->
+<!-- <script src="{{ url_for('static', filename='js/script.js') }}"></script> -->
+</body>
+
+
+    <!-- <script src="bootstrap/js/bootstrap.bundle.js"></script> -->
+</body>
+</html>

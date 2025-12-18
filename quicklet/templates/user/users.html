@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Page</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pic/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pic/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pic/apple-touch-icon.png') }}">
+
+</head>
+<body>
+    <h1 style="text-align: center; margin: 20px;">List of customers </h1>
+{#<p style="text-align: center;">Number of customers:{{ customers|count }}</p>#}
+<h2 style="text-align: center;">The total customers we have: {{num_of_customers}}</h2>
+{%for n in name%}
+<h3>{{n}}</h3>
+
+{%endfor%}
+<table border="1" cellpadding="10" align="center" >
+    <tr>
+        <th>S/N</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Date Registered</th>
+    </tr>
+    {%for user in users %}
+        <tr>
+            <td>{{user.user_id}}</td>
+            <td>{{user.user_lname}}</td>
+            <td>{{user.user_email}}</td>
+            <td>{{user.user_phone}}</td>
+            <td>{{user.user_regdate}}</td>
+        </tr>
+    {%endfor%}
+</table>
+</body>
+</html>

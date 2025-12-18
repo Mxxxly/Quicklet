@@ -1,0 +1,93 @@
+{%extends "user/agentdashboard_page.html"%}
+
+{%block dashtitle%}
+<h4>Edit Your Profile</h4>
+{%endblock%}
+
+
+{%block dashcontent%}
+
+<form action="{{url_for('agent_update_profile')}}" method="post" enctype="multipart/form-data">
+    {%set feedback=get_flashed_messages(with_categories=True)%}
+    {%for cat,message in feedback %}
+        {%if cat=='success'%}
+            <div class="alert alert-success text-center">
+                <p>{{message}}</p>
+
+            </div>
+            {%elif cat=='warning' %}
+            <div class="alert alert-danger text-center">
+                <p>{{message}}</p>
+            </div>   
+        {%endif%}
+    {%endfor%}
+<div class="row">
+    <div class="col-md-12 text-center">
+       <h3 class="text-center pt-4 mb-3"> Hi {{adeets.agent_fname|capitalize}}, Update Your Profile</h3>
+        <!-- Current Display Picture -->
+        <div class="mb-4 text-center">
+            {%if adeets.agent_avatar %}
+            <img src="/static/uploads/{{adeets.agent_avatar}}" alt="dp" class="profile-pic" >
+            {%else%}
+            <img src="/static/pic/default.jpg" alt="dp" class="profile-pic" >
+            {%endif%}
+            {{proform.agent_avatar}}
+        </div>
+
+
+    </div>
+</div>
+<div class="row g-4 pb-5">
+
+    <!-- for fname  -->
+    <div class="mb-3">
+        {{proform.fname.label(class_='form-label')}}
+        {{proform.fname(class_='form-control', value=adeets.agent_fname)}}
+    </div>
+
+    <!-- for lname    -->
+    <div class="mb-3">
+        {{proform.lname.label(class_='form-label')}}
+        {{proform.lname(class_='form-control', value=adeets.agent_lname)}}
+    </div>
+    <!-- for email    -->
+    <div class="mb-3">
+        {{proform.email.label(class_='form-label')}}
+        {{proform.email(class_='form-control', value=adeets.agent_email)}}
+    </div>
+
+    <!-- for phone  -->
+
+    <div class="mb-3">
+        {{proform.phone.label(class_='form-label')}}
+        {{proform.phone(class_='form-control', value=adeets.agent_phone)}}
+    </div>
+
+    <!-- for agent bio  -->
+
+    
+    <div class="mb-3">
+
+        {{proform.agent_bio.label(class_='form-label')}}
+        {{proform.agent_bio(class_='form-control')}}
+
+    </div>
+
+    <!-- for submit  -->
+
+    
+    <div class="mb-3">
+        {{proform.submit(class_='btn btn-primary w-100 btn-purple')}}
+      </div>
+      {{proform.csrf_token}}
+
+
+</div>
+
+
+</form>
+
+     
+</div>
+
+{%endblock%}

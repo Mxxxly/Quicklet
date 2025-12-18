@@ -1,0 +1,23 @@
+{%extends 'user/dashboard_layout.html'%}
+{%block dashcontent%}
+<h1 style="text-align: center; margin: 20px;">List of Users </h1>
+<p style="text-align: center;">Number of users:{{ user|count }}</p>
+<table border="1" cellpadding="10" align="center" >
+    <tr>
+        <th>S/N</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Date Registered</th>
+    </tr>
+    {%for use in user %}
+        <tr>
+            <td>{{user.id}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.phone}}</td>
+            <td>{{user.regdate}}</td>
+        </tr>
+    {%endfor%}
+</table>
+{%endblock dashcontent%}

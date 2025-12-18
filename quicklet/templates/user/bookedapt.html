@@ -1,0 +1,53 @@
+{% extends "user/dashboard_layout.html" %}
+
+{% block dashtitle %}
+<h4>My Paid Bookings</h4>
+{% endblock %}
+
+{% block dashcontent %}
+
+<div class="card p-3 mt-3">
+    <div class="card-body">
+        <h5 class="fw-semibold mb-3">Paid Apartments</h5>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle agent-table">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Apartment Title</th>
+                        <th>Agent</th>
+                        <th>Status</th>
+                        <th>Date Booked</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if bookings %}
+                        {% for b in bookings %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ b.apartment.apartment_title }}</td>
+                            <td>{{ b.apartment.agent.agent_fname|capitalize if b.apartment.agent else 'N/A' }}</td>
+                            <td>
+                                <span class="badge bg-success">Paid</span>
+                            </td>
+                            <td>{{ b.booking_date_created.strftime("%b %d, %Y") }}</td>
+                            <td>
+                                <a href="{{ url_for('apartment_display', apartment_id=b.apartment.apartment_id) }}" class="btn btn-purple btn-sm">
+                                    View Apartment
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No paid bookings yet.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

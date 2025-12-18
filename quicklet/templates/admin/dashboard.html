@@ -1,0 +1,91 @@
+{%extends "admin/admin_layout.html"%}
+          <!-- ========== title-wrapper end ========== -->
+
+          <!-- ========== Page Content start ========== -->
+        {%block admin%}
+
+          <div class="row mb-20">
+            
+    {%with messages = get_flashed_messages(with_categories=True) %}
+    {%if messages %}
+ 
+      {%for category,message in messages%}
+          {%if category == 'success'%}
+              <div class="alert alert-success">
+                <p>{{message}}</p>
+              </div>
+          {%else%}
+            <div class="alert alert-danger">
+              <p>{{message}}</p>
+            </div>
+
+          {%endif%}
+      {%endfor%}
+
+    {%endif%}
+    {%endwith%}
+
+            <div class="col-sm-6 col-lg-3">
+              <div class="card shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                  <div class="me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="fas fa-house"></i>
+                  </div>
+                  <div>
+                    <h4 class="mb-0">{{total_apartments}}</h4>
+                    <p class="mb-0 text-muted">Total Aparments</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-6 col-lg-3">
+              <div class="card shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                  <div class="me-3 bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="fa-solid fa-user-tie"></i>
+                  </div>
+                  <div>
+                    <h4 class="mb-0">{{total_agents}}</h4>
+                    <p class="mb-0 text-muted">Active agents</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+              <div class="card shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                  <div class="me-3 bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="fas fa-users"></i>
+                  </div>
+                  <div>
+                    <h4 class="mb-0">{{total_users}}</h4>
+                    <p class="mb-0 text-muted">Active Users</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-6 col-lg-3">
+              <div class="card shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                  <div class="me-3 bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    <i class="fas fa-shopping-cart"></i>
+                  </div>
+                  <div>
+                    <h4 class="mb-0">{{total_bookings}}</h4>
+                    <p class="mb-0 text-muted">Total Bookings</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        {%endblock%}
+    
+          <!-- ========== Page Content end ========== -->
+       

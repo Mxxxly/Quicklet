@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Page</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickLet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ql.css') }}">
+
+
+    <link rel="stylesheet" type="text/css" href="static/fontawesome/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lobster&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pic/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pic/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pic/apple-touch-icon.png') }}">
+
+    <style> 
+     
+    </style>
+</head>
+<body class="dashboard-page-body">
+    <!-- container -->
+ <div class="container-fluid">
+    <!-- header -->
+  <div class="row">
+    
+    <div class="col-md-12">
+        <nav class="navbar navbar-expand-lg mybg fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand qlbrand " href="{{url_for('home_page')}}">Quick<span class="qlsp">Let</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a href="{{url_for('home_page')}}" class="btn btn-warning mt-1">Home</a>
+  
+          </li>
+
+        <li class="nav-item">
+          <a href="{{url_for('contact')}}" class="btn btn-success mx-2" >Contact Us </a>
+        </li>
+      </ul>
+      
+        
+
+        <a href="{{url_for('user_logout')}}" class="btn text-danger btn-outline-danger" ><i class="fas fa-power-off"></i> Logout</a>
+    
+    </div>
+  </div>
+</nav>
+    </div>
+  </div>  
+
+
+<div class="row p-4">
+  {%with messages = get_flashed_messages(with_categories=True) %}
+  {%if messages %}
+
+    {%for category,message in messages%}
+        {%if category == 'success'%}
+            <div class="alert alert-success text-center">
+              <p>{{message}}</p>
+            </div>
+        {%else%}
+          <div class="alert alert-danger text-center">
+            <p>{{message}}</p>
+          </div>
+
+        {%endif%}
+    {%endfor%}
+
+  {%endif%}
+  {%endwith%}
+<div class="col-md-3 shadow-sm border-1 dashnav p-3 ">
+    <ul>
+      <a href="{{ url_for('user_dashboard') }}" class="dasha">
+        <li><i class="fas fa-tachometer-alt me-2"></i> Dashboard</li>
+    </a>
+    <hr>
+    
+    <a href="{{ url_for('edit_profile') }}" class="dasha">
+        <li><i class="fas fa-user-edit me-2"></i> Edit Profile</li>
+    </a>
+    <hr>
+    
+    <a href="{{url_for('booked_apt')}}" class="dasha">
+        <li><i class="fas fa-home me-2"></i> Booked Apartment</li>
+    </a>
+    <hr>
+   
+    
+    <a href="{{url_for('my_reservations')}}" class="dasha">
+        <li><i class="fas fa-calendar-check me-2"></i> My Reservations</li>
+    </a>
+    <hr>
+    
+    <a href="{{ url_for('user_logout') }}" class="dasha">
+        <li><i class="fas fa-sign-out-alt me-2"></i> Logout</li>
+    </a>
+    
+    </ul>
+</div>
+
+<div class="col-md-9 shadow-sm border-1 dashnav p-3">
+    <h3 class="p-3">Dashboard</h3>
+
+<!-- 
+    <div class="mb-4 text-center dashwelcome">
+      {%if udeets.user_avatar %}
+      <img src="/static/uploads/{{udeets.user_avatar}}" alt="dp" class="profile-pic" >
+      {%endif%}
+
+  </div> -->
+
+    <div class="dashwelcome">
+        <div>
+          {%if udeets.user_avatar %}
+          <img src="/static/uploads/{{udeets.user_avatar}}" alt="dp" class="profile-pic" >
+          {%else%}
+          <img src="/static/pic/default.jpg" alt="dp" class="profile-pic" >
+          {%endif%}
+    
+            <div class="greeting">Welcome, {{ u.user_fname|capitalize}}</div>
+            <div class="small">Find your next stay or manage upcoming bookings easily</div>
+        </div>
+        <div class="d-flex gap-2 align-items-center">
+            <a class="btn btn-outline-primary" href="{{url_for('edit_profile')}}">Edit Profile</a>
+            <a class="btn btn-outline-primary" href="{{url_for('booked_apt')}}">View bookings</a>
+            <a class="btn btn-purple" href="{{url_for('apartments')}}">Search apartments</a>
+
+        </div>
+    </div>
+
+    <!-- stats -->
+    <div class="stats mt-3">
+        <div class="stat-card card">
+          <div class="stat-title">Total Booked</div>
+          <div class="stat-value">
+            {% if paid_booking_count %}
+            {{ paid_booking_count }}
+            {% else %}
+                0
+            {% endif %}
+
+          </div>
+          <div class="small">
+            {% if paid_booking_count %}
+                  Paid bookings
+              {% else %}
+                  None Yet
+              {% endif %}
+
+          </div>
+        </div>
+        <div class="stat-card card">
+          <div class="stat-title">Pending payments</div>
+          <!-- <div class="stat-value">₦0</div> -->
+          <div class="stat-value">
+            {% if total_pending %}
+              ₦{{ "{:,.0f}".format(total_pending) }}
+            {% else %}
+              ₦0
+            {% endif %}
+          </div>
+          <div class="small">
+            {% if total_pending %}
+            You have pending invoices
+          {% else %}
+            No pending invoices
+          {% endif %}
+        </div>
+        </div>
+        <div class="stat-card card">
+          <div class="stat-title">Messages</div>
+          <div class="stat-value">0</div>
+          <div class="small">Unread messages</div>
+        </div>
+        <div class="stat-card card">
+          <div class="stat-title">Favorites</div>
+          <div class="stat-value">
+
+            {% if saved_apt_count %}
+                {{ saved_apt_count }}
+            {% else %}
+                0
+            {% endif %}
+          </div>
+          <div class="small">Saved apartments</div>
+        </div>
+      </div>
+
+      <!-- saved jobs  -->
+
+      
+
+      <!-- content -->
+
+      
+      <div class="card p-3 mt-4">
+        <div class="card-body">
+          <h5 class="fw-semibold mb-3">Booked Apartments</h5>
+          <div class="table-responsive">
+            <table class="table align-middle table-striped agent-table">
+              <thead >
+                <tr>
+                  <th>S/N</th>
+                  <th>Apartment Title</th>
+                  <th>Agent</th>
+                  <th>Status</th>
+                  <th>Date Booked</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if bookings %}
+                    {% for b in bookings %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ b.apartment.apartment_title }}</td>
+                        <td>{{ b.apartment.agent.agent_fname|capitalize  if b.apartment.agent else 'N/A' }}</td>
+                        <td>
+                            {% if b.status == 'confirmed' %}
+                                <span class="badge bg-success">Booked</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">{{ b.booking_status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ b.booking_date_created.strftime("%b %d, %Y") }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">You have not booked any apartments yet.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+            
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="card-body card mt-3">
+        <h5 class="fw-semibold mb-3">Saved Apartment</h5>
+        <div class="list-group" id="saved-apartments-list">
+          {% for apt in saved_apartments %}
+          <a href="{% if apt.apartment %}{{ url_for('apartment_display', apartment_id=apt.apartment_id) }}{% else %}#{% endif %}"
+             class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      
+              {% if apt.apartment %}
+                  {{ apt.apartment.apartment_title }}, {{ apt.apartment.apartment_address }}
+              {% else %}
+                  <span class="text-danger">This apartment has been deleted</span>
+              {% endif %}
+      
+              <span class="badge bg-warning text-dark">Saved</span>
+          </a>
+      {% endfor %}
+        </div>
+        
+        <a href="{{url_for('apartments')}}" class="btn btn-outline-info mt-3">Browse More Apartments</a>
+      </div>
+    </div>
+
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <script src="bootstrap/js/bootstrap.bundle.js"></script>
+</body>
+</html>

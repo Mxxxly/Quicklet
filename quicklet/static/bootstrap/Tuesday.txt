@@ -1,0 +1,7 @@
+Tuesday 
+Bootstrap
+The immediate p tag that has the same parent as h1 h1 +p{}
+A row cannot exist without a col
+types of col 
+1 col number col-6
+2 col breakpoint col-md-6

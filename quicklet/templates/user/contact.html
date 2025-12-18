@@ -1,0 +1,160 @@
+{%include "user/index_nav.html"%}
+ 
+
+
+<!-- second row  -->
+
+   
+
+   <div class="row mt-5 ">
+
+   <div class="col-md-5 continfo">
+
+    <h2 class="fw-bold mb-4">Get in Touch</h2>
+    <p class="mb-4 fw-bold">We’re here to answer your questions and help you book your perfect stay. Reach us anytime.</p>
+     <div class="icon-box">
+        
+        <span><i class="fas fa-phone-alt me-2"></i> +234 703 985 3440</span>
+      </div>
+      <br>
+       <div class="icon-box">
+        
+        <span><i class="fas fa-phone-alt me-2"></i> +234 907 834 7881</span>
+      </div>
+      <br>
+       <div class="icon-box">
+        
+        <span><i class="fas fa-envelope me-2"></i> Tomide@quicklet.com</span>
+      </div>
+      <br>
+
+       <div class="icon-box">
+        
+        <span><i class="fas fa-map-marker-alt me-2"></i> 5,Ogunsiji Allen Avenue Lagos</span>
+      </div>
+      
+
+   </div>
+   <div class="col-md-7">
+    {%with messages = get_flashed_messages(with_categories=True) %}
+    {%if messages %}
+ 
+      {%for category,message in messages%}
+          {%if category == 'success'%}
+              <div class="alert alert-success">
+                <p>{{message}}</p>
+              </div>
+          {%else%}
+            <div class="alert alert-danger">
+              <p>{{message}}</p>
+            </div>
+
+          {%endif%}
+      {%endfor%}
+
+    {%endif%}
+    {%endwith%}
+    <h3 class="mb-3">Talk to Our Experts </h3>
+    
+    <form method="POST" action="{{ url_for('contact') }}" novalidate>
+      {{ contact.csrf_token }}
+  
+      <div class="mb-3">
+          {{ contact.firstname.label }}
+          {{ contact.firstname(class="form-control") }}
+      </div>
+  
+      <div class="mb-3">
+          {{ contact.email.label }}
+          {{ contact.email(class="form-control") }}
+      </div>
+  
+      <div class="mb-3">
+          {{ contact.phone.label }}
+          {{ contact.phone(class="form-control") }}
+      </div>
+  
+      <div class="mb-3">
+          {{ contact.complain_text.label }}
+          {{ contact.complain_text(class="form-control") }}
+      </div>
+  
+      <label>{{ contact.contact_method.label }}</label><br>
+      {% for subfield in contact.contact_method %}
+          <div class="form-check form-check-inline">
+              {{ subfield(class="form-check-input") }}
+              {{ subfield.label(class="form-check-label") }}
+          </div>
+      {% endfor %}
+  
+      <div class="mt-3">
+          <button type="submit" class="btn btn-purple">Send Message</button>
+      </div>
+  </form>
+   </div>
+
+
+
+    </div>
+    
+
+
+
+
+   
+  <!-- footer  -->
+<!-- 
+
+  <div class="row footbac">
+   <div class="col-md-4 text-center  mt-4">
+   <h3 class="footcol">Support and Resourses</h3>
+   <p> <a href="#" class="footcol">About Us</a></p>
+    <p><a href="#" class="footcol">Privacy Policy</a></p>
+   <p><a href="#" class="footcol">Refund & Cancellation</a></p>
+   <p><a href="#" class="footcol">Terms & Conditions</a></p>
+    </div>
+     
+
+    <div class="col-md-4 text-center mt-4">
+     <h3 class="footcol">Booking and Enquires </h3>
+   <p class="footcol"> <span><i class="fas fa-phone-alt me-2 "></i> +234 703 985 3440</span></p>
+    <p class="footcol"><span><i class="fas fa-envelope me-2"></i> Tomide@quicklet.com</span></p>
+   <p class="footcol"><span><i class="fas fa-map-marker-alt me-2"></i> 5,Ogunsiji Allen Avenue Lagos</span></p>
+   
+    
+   </div>
+
+
+    <div class="col-md-4 text-center mt-4">
+      <h3 class="footcol">QuickLet Socials </h3>
+    <a href="#"><i class="fab fa-facebook fa-lg text-light me-3"></i></a>
+    <a href="#"><i class="fab fa-instagram fa-lg text-light me-3"></i></a>
+    <a href="#"><i class="fab fa-twitter fa-lg text-light me-3"></i></a>
+    <a href="#"><i class="fab fa-whatsapp fa-lg text-light me-3"></i></a>
+  
+    
+   </div>
+   <hr style="color: white;">
+
+   <div class="col-md-12 text-center">
+     <p style="color:white"> &copy 2025 QuickLet Apartments | All Rights Reserved</p>
+   </div>
+
+
+  </div>
+
+  -->
+
+
+
+
+
+
+
+
+</div>   
+
+</body>
+
+
+</html> 

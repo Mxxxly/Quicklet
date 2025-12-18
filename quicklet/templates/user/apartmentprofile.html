@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>QuickLet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ql.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/all.min.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='pic/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pic/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='pic/apple-touch-icon.png') }}">
+    
+
+    <!-- <link rel="stylesheet" type="text/css" href="static/fontawesome/css/all.min.css"> -->
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"> -->
+     <!-- <link rel="stylesheet" href="{{url_for('static', filename='/bootstrap/css/bootstrap.min.css/')}}"> -->
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap/css/bootstrap.min.css') }}"> -->
+
+
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lobster&display=swap" rel="stylesheet">
+
+
+    <style> 
+             
+    </style>
+</head>
+<body class="apartment-profile-body">
+    <!-- container -->
+ <div class="container">
+    <!-- header --> 
+  <div class="row ">
+    
+    <div class="col-md-12">
+        <nav class="navbar navbar-expand-lg mybg fixed-top">
+  <div class="container-fluid">
+    
+    <a class="navbar-brand qlbrand " href="{{url_for('home_page')}}">Quick<span class="qlsp">Let</span></a>
+   
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+         <li class="nav-item">
+          <a class="nav-link" href="{{url_for('home_page')}}">Home</a>
+        </li>
+
+        
+       
+       
+        
+        
+        <li class="nav-item">
+          <a href="{{url_for('contact')}}" class="nav-link " >Contact Us </a>
+        </li>
+
+        
+                  <!-- RIGHT (LOGIN / REGISTER / HELLO USER) -->
+                  {% if not user and not agent %}
+                  
+                      <!-- REGISTER -->
+                  <li class="nav-item dropdown mx-1">
+                    <a class="btn btn-warning dropdown-toggle text-dark" href="#" role="button"
+                      id="registerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      Register
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="registerDropdown">
+                      <li><a class="dropdown-item" href="{{ url_for('user_register') }}">User</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{{ url_for('agent_register') }}">Agent</a></li>
+                    </ul>
+                </li>
+
+                      <!-- LOGIN -->
+                      <li class="nav-item dropdown mx-1">
+                        <a class="btn btn-warning dropdown-toggle text-dark" href="#" role="button"
+                           id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                          Login
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="loginDropdown">
+                          <li><a class="dropdown-item" href="{{ url_for('user_login') }}">User</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="{{ url_for('agent_login') }}">Agent</a></li>
+                        </ul>
+                      </li>
+                  {% elif user %}
+                      <!-- USER LOGGED IN -->
+                  <a href="{{url_for('user_dashboard')}}" class="btn btn-warning mx-2 text-dark"> Hi, {{ user.user_fname|capitalize }}</a>
+
+                      <!-- <span class="nav-link text-light fw-bold me-3">
+                          Hello, {{ user.user_fname }}
+                      </span> -->
+                      <a href="{{ url_for('user_logout') }}" 
+                         class="btn btn-danger"><i class="fas fa-power-off"></i> Logout</a>
+  
+                  {% elif agent %}
+                      <!-- AGENT LOGGED IN -->
+                  <a href="{{url_for('agent_dashboard')}}" class="btn btn-warning mx-2 text-dark">  Hi, {{ agent.agent_fname|capitalize }}</a>
+
+                      <!-- <span class="nav-link text-light fw-bold me-3">
+                          Hello, {{ agent.agent_fname }}
+                      </span> -->
+                      <a href="{{ url_for('agent_logout') }}" 
+                         class="btn btn-danger"><i class="fas fa-power-off"></i> Logout</a>
+                  {% endif %}
+    
+
+
+      </ul>
+   
+    </div>
+  </div>
+</nav>
+    </div>
+  </div>  
+
+  {%with messages = get_flashed_messages(with_categories=True) %}
+  {%if messages %}
+
+    {%for category,message in messages%}
+        {%if category == 'success'%}
+            <div class="alert alert-success text-center">
+              <p>{{message}}</p>
+            </div>
+        {%else%}
+          <div class="alert alert-danger text-center">
+            <p>{{message}}</p>
+          </div>
+
+        {%endif%}
+    {%endfor%}
+
+  {%endif%}
+  {%endwith%}
+
+
+<div class="row">
+    <div class="col-md-12 p-3 d-flex align-items-center">
+        <a style="border: none;" href="{{url_for('home_page')}}" class="me-5"> <i class="fa-solid fa-arrow-left"></i></a>
+        <span style="font-size:25px;">{{ apartment.apartment_title }} </span>
+
+        <div class="ms-auto"> 
+             <button class="btn btn-share ">
+            <i class="fas fa-share-alt"></i> Share
+        </button>
+
+        <!-- Save Button -->
+
+        <button class="save-btn btn btn-light" data-id="{{ apartment.apartment_id }}">
+          {% if apartment_saved %}
+              <i class="fa-solid fa-heart text-danger"></i> Saved
+          {% else %}
+              <i class="fa-regular fa-heart"></i> Save
+          {% endif %}
+      </button>
+
+
+        <!-- <button class="btn btn-save">
+            <i class="fas fa-bookmark"></i> Save
+        </button> -->
+        </div>
+        
+    </div>
+</div>
+
+
+<hr>
+
+<div class="row">
+
+  <!-- LEFT BIG IMAGE -->
+  <div class="col-12 col-md-6">
+      <div class="img-box">
+          <img src="{{ url_for('static', filename=(apartment.pictures[0].apt_image if apartment.pictures|length > 0 else 'pic/default.jpg')) }}"
+               class="apt-img">
+      </div>
+  </div>
+
+  <!-- MIDDLE TWO IMAGES -->
+  <div class="col-6 col-md-3 mb-2 d-none d-md-block">
+      <div class="img-box">
+          {% if apartment.pictures|length > 1 %}
+          <div class="">
+              <img src="{{ url_for('static', filename=apartment.pictures[1].apt_image) }}"
+                   class="apt-img" style="height: 500px;">
+          </div>
+          {% endif %}
+
+     
+      </div>
+  </div>
+
+  <!-- RIGHT IMAGE + BUTTON -->
+  <div class="col-6 col-md-3 mb-2 d-none d-md-block">
+      <div class="img-box">
+
+          {% if apartment.pictures|length > 2 %}
+          <div class="img-half">
+              <img src="{{ url_for('static', filename=apartment.pictures[2].apt_image) }}"
+                   class="apt-img">
+          </div>
+          {% endif %}
+
+             <button class="btn btn-purple show-button  d-none d-md-inline-block" data-bs-toggle="modal" data-bs-target="#allImagesModal">
+              <i class="fa-solid fa-images"></i> Show all Images
+          </button>
+
+
+          <!-- <button class="btn btn-purple show-button" data-bs-toggle="modal" data-bs-target="#allImagesModal">
+              <i class="fa-solid fa-images"></i> Show all Images
+          </button> -->
+      </div>
+ 
+
+
+  </div>
+
+</div>
+      <!-- IMAGE GALLERY MODAL -->
+      <div class="modal fade" id="allImagesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+          <div class="modal-content">
+      
+            <div class="modal-header">
+              <h5 class="modal-title">All Apartment Images</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <div class="modal-body">
+              <div class="row g-3">
+      
+                {% if apartment.pictures and apartment.pictures|length > 0 %}
+                  {% for pic in apartment.pictures %}
+                    <div class="col-md-6">
+                      <div class="modal-img-box">
+                        <img src="{{ url_for('static', filename=pic.apt_image) }}" class="img-fluid rounded shadow-sm">
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <p>No images uploaded for this apartment.</p>
+                {% endif %}
+      
+              </div>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+<div class="col-12 d-md-none mt-2">
+  <button class="btn btn-purple w-100" data-bs-toggle="modal" data-bs-target="#allImagesModal">
+      <i class="fa-solid fa-images"></i> Show all Images
+  </button>
+</div>
+<div class="row">
+  <div class="col-md-12 d-flex justify-content-between align-items-center mt-4">
+    <div>
+      <h3>{{ apartment.apartment_title }} </h3>
+       <h5> {{ apartment.apartment_address }}</h5>
+
+      <p>
+         <!-- {{ apartment.apartment_max_guests }} Guest Allowed •   -->
+        {{ apartment.category.category_name }} 
+        <!-- {{ apartment.apartment_bathrooms }} baths -->
+      </p>
+
+      <div class="small-muted">
+        <i class="fa-solid fa-message me-1"></i>
+        <strong>{{ review_count }}</strong>
+        review{{ 's' if review_count != 1 else '' }}
+    </div>
+
+    </div>
+    
+   {%if apartment.apartment_max_guests%}
+   <div class="d-flex align-items-center">
+    <i class="fa-solid fa-user-group me-2"></i>
+    <span>{{ apartment.apartment_max_guests }} Guests Maximum</span>
+</div>
+
+   {%endif%}
+  </div>
+</div>
+
+
+
+<hr>
+<div class="row">
+  <div class="col-md-7">
+
+
+
+        <div class="card p-3 mb-3">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              {%if apartment.agent and apartment.agent.agent_avatar %}
+              <img src="/static/uploads/{{apartment.agent.agent_avatar}}" alt="dp" class="host-avatar" >
+              {%endif%}
+
+              <!-- <img src="{{ apartment.agent.agent_avatar }}" class="host-avatar"> -->
+              <!-- <img src="static/pic/profile_picture.jpg" alt="jessica" class="host-avatar">  -->
+              <div>
+                
+                <div class="small-muted"><i class="fa-solid fa-user-tie me-1"></i> Hosted by <strong>{{ apartment.agent.agent_fname|capitalize }}</strong></div>
+                <div class="small-muted"><i class="fa-solid fa-star text-warning me-1"></i><strong> Superhost</strong> </div>
+                <!-- <div class="small-muted">• 5 months hosting</div> -->
+                <div class="small-muted">
+                  <i class="fa-solid fa-circle-dot me-1"></i>
+                  {% if hosting_months < 1 %}
+                      New Agent
+                  {% else %}
+                      {{ hosting_months }} month{{ 's' if hosting_months > 1 else '' }} hosting
+                  {% endif %}
+              </div>
+              
+              </div>
+            </div>
+            <div class="text-end small-muted">
+              <div>Response rate: <strong>98%</strong></div>
+              
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="card p-3 mb-3">
+          <h5>About this space</h5>
+          <p>{{apartment.apartment_description}}
+            <br>
+             It is located in a secure estate, the property features an open-plan kitchen, expansive lounge, and well-appointed bedrooms.</p>
+          <ul>
+            <li>Flexible check-in between 2pm and 10pm</li>
+            <li>Free high-speed Wi-Fi</li>
+            <li>Daily housekeeping available on request</li>
+          </ul>
+        </div>
+
+
+        <!-- amenities -->
+        <div class="card p-3 mb-3">
+          <h5>Amenities</h5>
+          <div class="amenities mt-3">
+            <div class="amenity"><i class="fa-solid fa-wifi fa-lg text-primary"></i><div>High-speed Wi-Fi</div></div>
+            <div class="amenity"><i class="fa-solid fa-snowflake fa-lg text-primary"></i><div>Air conditioning</div></div>
+            <div class="amenity"><i class="fa-solid fa-tv fa-lg text-primary"></i><div>Smart TV</div></div>
+            <div class="amenity"><i class="fa-solid fa-kitchen-set fa-lg text-primary"></i><div>Full kitchen</div></div>
+            <div class="amenity"><i class="fa-solid fa-car fa-lg text-primary"></i><div>Private parking</div></div>
+            <div class="amenity"><i class="fa-solid fa-shield-halved fa-lg text-primary"></i><div>24/7 Security</div></div>
+          </div>
+        </div>
+
+
+
+        <div class="card p-3 mb-3">
+          
+          <h5>Property Location</h5>
+          <div class="map-container" style="width:100%; height:220px; border-radius:8px; overflow:hidden;">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.469540194333!2d3.304790275283616!3d6.588410093405233!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b91c822138137%3A0x7b7da9407e1bcebb!2s102%20Shasha%20Rd%2C%20Egbeda%2C%20Ikeja%20102213%2C%20Lagos!5e0!3m2!1sen!2sng!4v1760575982951!5m2!1sen!2sng"
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        <p class="mt-2">Calm and convenient location • close to shops and transport</p>
+      </div>
+
+        <!-- Reviews Section -->
+
+        <!-- Reviews Section -->
+<div class="card p-3 mb-3">
+  <h5>Submit a Review</h5>
+  {% if user %}
+      {% set has_paid = paid_booking %}
+      {% if has_paid %}
+          <form action="{{ url_for('submit_review', apartment_id=apartment.apartment_id) }}" method="POST">
+              <div class="mb-3">
+                  <label class="form-label">Your Review</label>
+                  <textarea name="review_comment" class="form-control" rows="3" required></textarea>
+              </div>
+              <div class="mb-3">
+                  <label class="form-label">Rating</label>
+                  <select name="review_rating_number" class="form-select" required>
+                      <option value="" disabled selected>Choose a rating</option>
+                      <option value="1">1 ⭐</option>
+                      <option value="2">2 ⭐⭐</option>
+                      <option value="3">3 ⭐⭐⭐</option>
+                      <option value="4">4 ⭐⭐⭐⭐</option>
+                      <option value="5">5 ⭐⭐⭐⭐⭐</option>
+                  </select>
+              </div>
+              <button type="submit" class="btn btn-purple">Submit Review</button>
+          </form>
+      {% else %}
+          <p class="text-muted">You can only review apartments you have paid for.</p>
+      {% endif %}
+  {% else %}
+      <p class="text-muted">Please <a href="{{ url_for('user_login') }}">login</a> to submit a review.</p>
+  {% endif %}
+</div>
+
+<div class="card p-3 mb-3">
+  <h5>Reviews</h5>
+  {% for review in apartment.reviews %}
+      <div class="border p-2 mb-2 rounded">
+          <strong>{{ review.user.user_fname|capitalize }}</strong> - 
+          <span>{{ review.review_rating_number }} ⭐</span>
+          <p>{{ review.review_comment }}</p>
+          <small class="text-muted">{{ review.review_date_created.strftime("%b %d, %Y") }}</small>
+      </div>
+  {% else %}
+      <p class="text-muted">No reviews yet.</p>
+  {% endfor %}
+</div>
+
+
+
+
+
+
+
+
+        
+  </div>
+  <aside class="col-lg-5">
+    <form method="POST">
+      {{ form.hidden_tag() }}
+  
+      <div class="card shadow-sm p-4" style="border-radius: 16px; max-width: 520px;">
+  
+        <!-- Price -->
+        <h4 class="fw-normal mb-4" style="font-weight: 500; font-size: 1.6rem;">
+            ₦{{ "{:,.0f}".format(apartment.apartment_price) }}
+            <span class="text-muted" style="font-size: 0.9rem;">/ night</span>
+        </h4>
+  
+        <!-- Booking Box -->
+        <div class="p-2 mb-3 rounded-4"
+             style="background: #f1eff3ec; border: 1.5px solid black;">
+  
+            <div class="row g-3">
+  
+                <!-- Check-in -->
+                <div class="col-6">
+                    {{ form.check_in.label(class="form-label text-muted small mb-1") }}
+                    {{ form.check_in(class="form-control form-control-lg rounded-3", style="border-color:#c9a9ff;") }}
+                </div>
+  
+                <!-- Check-out -->
+                <div class="col-6">
+                    {{ form.check_out.label(class="form-label text-muted small mb-1") }}
+                    {{ form.check_out(class="form-control form-control-lg rounded-3", style="border-color:#c9a9ff;") }}
+                </div>
+                <hr>
+                <!-- Guests -->
+                <div class="col-12 mt-2">
+                    {{ form.guests.label(class="form-label text-muted small mb-1") }}
+                    {{ form.guests(class="form-select form-select-lg rounded-3", style="border-color:#c9a9ff;") }}
+                </div>
+  
+            </div>
+        </div>
+  
+        {# form.submit(class="btn btn-purple w-100 mb-2") #}
+
+
+        {% if conflicting_booking %}
+            <div class="alert alert-warning text-center mb-2">
+                <strong>Unavailable:</strong>
+                Booked from {{ conflicting_booking.booking_checkin }} to {{ conflicting_booking.booking_checkout }}
+            </div>
+        {% endif %}
+
+
+
+      
+
+
+
+
+        {% if user and paid_booking %}
+    <a class="btn btn-purple w-100" disabled>
+        Booked By You
+    </a>
+    {% elif agent %}
+    <a href="{{ url_for('user_login') }}" class="btn btn-purple w-100">
+      Agents Can't Book Apartment 
+  </a>
+  
+  {% elif not user %}
+    <a href="{{ url_for('user_login') }}" class="btn btn-purple w-100">
+        Login to Book
+    </a>
+{% else %}
+    {{ form.submit(class="btn btn-purple w-100 mb-2") }}
+{% endif %}
+  
+      </div>
+  </form>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <!-- <script src="bootstrap/js/bootstrap.bundle.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="{{ url_for('static', filename='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+<!-- <script src="{{ url_for('static', filename='/bootstrap/js/bootstrap.bundle.min.js') }}"></script> -->
+<script>
+  $(document).ready(function(){
+    const csrf = $('meta[name="csrf-token"]').attr('content');
+  
+    $(document).on("click", ".save-btn", function (e) {
+        e.preventDefault();
+        let btn = $(this);
+        let apartmentID = btn.data("id");
+  
+        $.ajax({
+            url: "/toggle_save",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ apartment_id: apartmentID }),
+            headers: {
+              "X-CSRFToken": csrf,
+              "X-Requested-With": "XMLHttpRequest"
+            },
+            success: function (res) {
+                if (res.status === "login_required") {
+                    alert("Please log in to save apartments.");
+                    window.location.href = "{{ url_for('user_login') }}";
+                    return;
+                }
+                if (res.status === "saved") {
+                    btn.html('<i class="fa-solid fa-heart text-danger"></i> Saved');
+                } else if (res.status === "removed") {
+                    btn.html('<i class="fa-regular fa-heart"></i> Save');
+                }
+            },
+            error: function (xhr) {
+                console.log("SAVE ERR", xhr.status, xhr.responseText);
+                if (xhr.status === 401) {
+                    alert("Please log in to save apartments.");
+                    window.location.href = "{{ url_for('user_login') }}";
+                } else if (xhr.status === 400) {
+                    alert("Request blocked (CSRF). Try refreshing the page.");
+                }
+            }
+        });
+    });
+  });
+  </script>
+  
+
+
+</body>
+</html>

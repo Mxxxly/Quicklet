@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/pic/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/pic/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="static/pic/apple-touch-icon.png">
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <h2>Admin Login</h2>
+                <form action="" method="post">
+                    {%set feedback=get_flashed_messages(with_categories=True)%}
+                    {%for cat,message in feedback %}
+                        {%if cat=='msg'%}
+                            <div class="alert alert-success">
+                                <p>{{message}}</p>
+
+                            </div>
+                            {%elif cat=='adminmsg' %}
+                            <div class="alert alert-danger">
+                                <p>{{message}}</p>
+                            </div>   
+                        {%endif%}
+                    {%endfor%}
+                    {{adminloginform.csrf_token}}
+                    <div class="mb-3">
+                        {{adminloginform.username.label}}
+                        {{adminloginform.username(class_='form-control border-dark')}}
+                    </div>
+                    <div class="mb-3">
+                        {{adminloginform.password.label}}
+                        {{adminloginform.password(class_='form-control border-dark')}}
+                    </div>
+                    <div>
+                        {{adminloginform.submit(class_='btn btn-primary col-12')}}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

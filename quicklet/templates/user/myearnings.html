@@ -1,0 +1,75 @@
+{% extends "user/agentdashboard_page.html" %}
+
+{% block dashtitle %}
+<h3 class="mb-5">Your Earnings</h3>
+{% endblock dashtitle %}
+
+{% block dashcontent %}
+
+<div class="row mb-4 text-center">
+    <div class="col-md-4">
+        <div class="card p-3 shadow-sm">
+            <h5>Total Earned</h5>
+            <h3>₦{{ "{:,}".format(total_earned) }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3 shadow-sm">
+            <h5>Pending Earnings</h5>
+            <h3>₦{{ "{:,}".format(pending_earnings) }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3 shadow-sm">
+            <h5>Completed Bookings</h5>
+            <h3>{{ "{:,}".format(total_paid_bookings) }} </h3>
+        </div>
+    </div>
+</div>
+
+<h5 class="mt-4 mb-3">Recent Transactions</h5>
+<table class="table table-striped agent-table">
+    <thead>
+        <tr>
+            <th>Booking Ref</th>
+            <th>Apartment</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for b in bookings %}
+        <tr>
+            <td>{{ b.booking_ref }}</td>
+            <td>{{ b.apartment.apartment_title }}</td>
+            <td>₦{{ "{:,}".format(b.booking_price) }}</td>
+            <td>{{ b.booking_status }}</td>
+            <td>{{ b.booking_checkin }}</td>
+            <td>{{ b.booking_checkout }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<h5 class="mt-5 mb-3">Earnings Per Apartment</h5>
+<table class="table table-bordered agent-table">
+    <thead>
+        <tr>
+            <th>Apartment</th>
+            <th>Total Earned</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for apt, amount in earnings_per_apartment.items() %}
+        <tr>
+            <td>{{ apt.apartment_title }}</td>
+            <td>₦{{ "{:,}".format(amount) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock dashcontent %}
