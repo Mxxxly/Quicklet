@@ -2405,6 +2405,14 @@ font-family: "lobster", cursive;
   font-size: 14px;
   font-weight: 600;
 }
+.hero-badge-p {
+  background: rgba(100, 255, 0, 0.3); /* yellow tint */
+  color: black; /* yellow */
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
 
 /* TITLE */
 .hero-title {
@@ -2526,6 +2534,7 @@ font-family: "lobster", cursive;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  border-radius: 20px;
   padding: 40px 0;  /* reduced padding */
   min-height: 380px; /* limits the height */
 }
