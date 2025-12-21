@@ -407,7 +407,8 @@
           {{ apt.apartment_address }} • {{ apt.category.category_name }}
         </p>
 
-        <div class="d-flex justify-content-between align-items-center mt-2">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mt-2 gap-2">
+
           <span class="fw-bold">
             ₦{{ "{:,.0f}".format(apt.apartment_price) }}
             <small class="text-muted">/Night</small>
